@@ -1,0 +1,429 @@
+/*
+     This template is created and maintained by Siddhartha Gupta.
+     S.G. thanks to w3schools for the nice tutorials.
+     In case one needs a copy, S.G. must be acknowledged.
+*/
+
+body {
+    margin: 0;
+    background-color: black;
+    /* background-image: url("images/OW1Sew.jpg");
+      background-size: auto, auto, cover;*/
+    
+    padding: 0;
+}
+article {
+    margin-left:14.5%;
+    margin-top:1.00%; 
+    margin-right:14.5%;
+    padding: 0em;
+    overflow: hidden;
+    background-color: white;  
+}
+footer{
+    padding: 1em;
+    color: black;
+    background-color: white;
+    clear: left;
+    margin-left:14.5%;
+    margin-right:14.5%;
+    line-height:27px;
+    border-top: thick solid;
+    text-align: center;
+    font-size: 15px
+}
+@media screen and (max-width: 700px) {
+article {
+    margin-left:2.5%;
+    margin-top:1.00%; 
+    margin-right:2.5%;
+    padding: 0em;
+    overflow: hidden;
+    background-color: white;  
+}
+}
+@media screen and (max-width: 700px) {
+footer{
+    padding: 1em;
+    color: black;
+    background-color: white;
+    clear: left;
+    margin-left:2.5%;
+    margin-right:2.5%;
+    line-height:27px;
+    border-top: thick solid;
+    text-align: center;
+    font-size: 10px
+}
+}
+
+/*Tab details*/
+.container {
+    overflow: hidden;
+    background-color: black;
+    
+}
+.container a {
+    float: left;
+    font-family: "Times New Roman", Times, serif;   
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    padding: 15.2px 19px;
+    text-decoration: none;
+}
+.dropdown {
+    float: left;
+    overflow: hidden;
+}
+.dropdown .dropbtn {
+    font-size: 17px; 
+    font-family: "Times New Roman", Times, serif;   
+    border: 0;
+    outline: 0;
+    color: #00CED1;
+    padding: 14.5px 19px;
+    text-align: center;
+    background-color: inherit;
+}
+.container a:hover, .dropdown:hover {
+    background-color: white;
+    color: black;
+}
+/*.dropbtn */
+.dropbtn.active {
+    background-color: #e3edef;
+    color: #00CED1;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 79px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.dropdown-content a {
+    font-size: 15px; 
+    float: none;
+    color: black;
+    padding: 11px 6.5px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+.dropdown-content a:focus, .active {
+    background-color: #e3edef;
+    color: black;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    -webkit-animation: fadeEffect 1s;
+    animation: fadeEffect 1s;
+}
+
+/* Link style */
+a:link {
+    text-decoration: none;
+    font-weight: 600;
+    color: #00CED1
+}
+a:visited {
+   color: #00CED1
+}
+a:hover {
+    color: red;
+}
+
+/**/
+
+h1 {
+    background-color: white;
+    font-family: "Bookman";
+    font-variant: small-caps;
+    font-size: 35px;
+    padding: 0.0em 0.7em;
+}
+@media screen and (max-width: 700px) {
+h1 {
+    background-color: white;
+    font-family: "Bookman";
+    font-variant: small-caps;
+    font-size: 29px;
+    padding: 0.0em 0.7em;
+}
+}
+
+/* Text style */
+contact{
+  font-size: 12pt;
+  /*line-height:auto;*/
+}
+intro{
+  line-height:29px; 
+  font-size: 12pt;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/*  */
+.aboutme_slides {display:none}
+
+/* Slideshow container */
+.aboutme_slideshow-container {
+  max-width: 500px;
+  max-height: 250px;
+  position: relative;
+  margin: auto;
+  margin-bottom: 0px
+}
+/* Fading animation */
+.moveto {
+  -webkit-animation-name: moveto;
+  -webkit-animation-duration: 1.5s;
+  animation-name: moveto;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes moveto {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+@keyframes moveto {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 1px 12px;
+  position: absolute;
+}
+.captext {
+  font-style: oblique;
+  color: #f2f2f2;
+  text-align: left;
+  position: relative;
+  max-width:95%; 
+  background-color: black;
+  opacity: 0.5; 
+  bottom: 40px; 
+  padding: 0.5em 2em;
+}
+
+.captextam {
+  font-size: 12.5px;
+  color: #f2f2f2;
+  text-align: left;
+  position: relative;
+  max-width:95%; 
+  background-color: black;
+  opacity: 0.5; 
+  bottom: 30.9px; 
+  padding: 0.5em 2em;
+  
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 45%;
+  max-width:90%; 
+  padding: 1em 1em;
+  /*padding: 16px;*/
+  /*margin-bottom: 20%;
+  margin-left: 0%;*/
+  margin-left: -5.5%;
+  margin-right: 15.05%;
+  color: black;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 3px 3px 3px 3px;
+}
+
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 3px 3px 3px;
+}
+
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+
+/* new */
+.accordion {
+    background-color: #eee;
+    /*background-image: url("images/aa.jpg");*/
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    font-family: "Times New Roman", Times, serif;   
+    outline: none;
+    font-size: 25px;
+    transition: 0.4s;
+}
+
+.active, .accordion:hover {
+    background-color: #ccc; 
+}
+
+.panel {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+/*end*/
+
+
+#myDraw:hover {opacity: 0.75;}
+
+
+#scrollup {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: #FF5733 ;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+#scrollup:hover {
+  background-color: #555;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
+}
+
+/*  timeline */
+
+/* The actual timeline (the vertical ruler) */
+.timeline {
+  position: relative;
+  max-width: 80%;
+  margin: 0%;
+}
+
+/* The actual timeline (the vertical ruler) */
+.timeline::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  background-color: black;
+  top: 0;
+  bottom: 0;
+  left: 60%;
+  margin-left: -2px;
+}
+
+/* Container around content */
+.timelinecontainer {
+  padding: 10px 40px;
+  position: relative;
+  background-color: inherit;
+  width: 50%;
+}
+
+/* The circles on the timeline */
+.timelinecontainer::after {
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  right: -17px;
+  background-color: white;
+  border: 4px solid #FF9F55;
+  top: 15px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Place the container to the left */
+.timelineleft {
+  left: 0%;
+}
+
+/* Place the container to the right */
+.timelineright {
+  left: 60%;
+}
+
+/* Add arrows to the left container (pointing right) */
+.timelineleft::before {
+  content: " ";
+  height: 0;
+  position: absolute;
+  top: 22px;
+  width: 0;
+  z-index: 1;
+  right: 30px;
+  border: medium solid black;
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent lightgrey;
+}
+
+
+/* Add arrows to the right container (pointing left) */
+.timelineright::before {
+  content: " ";
+  height: 0;
+  position: absolute;
+  top: 22px;
+  width: 0;
+  z-index: 1;
+  left: 30px;
+  border: medium solid black;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent lightgrey transparent transparent;
+}
+
+
+/* Fix the circle for containers on the right side */
+.timelineright::after {
+  left: -15px;
+}
+
+
+/* The actual content */
+.timelinecontent {
+  padding: 5px 10px;
+  background-color: lightgrey;
+  position: relative;
+  border-radius: 10px;
+}
