@@ -1,12 +1,732 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
+<!-- 
+     This template is created and maintained by Siddhartha Gupta.
+     S.G. thanks to w3schools for the nice tutorials.
+     In case one needs a copy, S.G. must be acknowledged.  -->
+<!-- ==== Define style ===== -->
 <head>
-<title>Page Title</title>
+    <title>Siddhartha Gupta</title>
+    <link rel="stylesheet" href="sg_style.css">
+    
+    <style>
+
+</style>
+
 </head>
+
 <body>
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
+<article>
+<h1>Siddhartha Gupta</h1>
+
+<div class="container">
+  <a href="#home" class="dropbtn" onclick="openTab(event, 'Home')" id="defaultOpen" >Home</a>
+  <div href="#research" class="dropdown" >
+    <button href="#research" class="dropbtn" onclick="openTab(event, 'Research')" >Research</button>
+    <div class="dropdown-content">
+      <a href="#research_interests" class="dropbtn" onclick="openTab(event, 'Research')" >Interests</a>
+      <a href="#research_collaborators" class="dropbtn" onclick="openTab(event, 'Research')" >Collaborators</a>
+      <a href="#research_summary" class="dropbtn" onclick="openTab(event, 'Research')" >Summary</a>
+      <a href="#research_presentation" class="dropbtn" onclick="openTab(event, 'Research')" >Talks/Posters</a>
+      <a href="#research_publications" class="dropbtn" onclick="openTab(event, 'Research')"  >Publications</a>
+    </div>
+  </div>
+  <a href="#movies" class="dropbtn" onclick="openTab(event, 'Movies')" >Movies</a>
+  <a href="#codes" class="dropbtn" onclick="openTab(event, 'Code')">Codes</a>
+  <a href="#gallery" class="dropbtn" onclick="openTab(event, 'Gallery')" >Gallery</a>
+  <!-- <a href="#aboutme" class="dropbtn" onclick="openTab(event, 'About me')">About me</a> -->
+  <div href="#aboutme" class="dropdown" >
+    <button href="#aboutme" class="dropbtn" onclick="openTab(event, 'About me')"   >About me</button>
+    <div class="dropdown-content">
+      <a href="#aboutme_cv" class="dropbtn" onclick="openTab(event, 'About me')" >CV</a>
+      <a href="#aboutme_academic" class="dropbtn" onclick="openTab(event, 'About me')" >Academic</a>
+      <a href="#aboutme_refresho" class="dropbtn" onclick="openTab(event, 'About me')" >Refresho</a>
+    </div>
+  </div>
+  <a href="#contact" class="dropbtn" onclick="openTab(event, 'Contact')">Contact</a>
+</div>
+
+<div class="tabmenu">
+  
+  <!--================ Home ========================== -->
+  <div id="Home" class=tabcontent style="margin:2%;">
+   
+   <div class="slideshow-container" style="float: center; max-width:100%;max-height:100%;">
+     <video width=100% controls loop; style="float: center; width:100%;" >
+     <source src="video/coverpage.m4v"  type="video/mp4">
+      <source src="video/coverpage.ogg" type="video/ogg">
+    </video>
+       <div class="text" style="float: center; font-size:12pt" > </div> 
+     </br>     
+  </div> 
+
+    <img src="images/aboutme_1.jpg" style="float:right; padding:1em; max-width:32%;max-height:35%; border-radius: 20px;" class="wrap align-right">
+  <h3>Welcome</h3>
+  
+    <intro style="line-height:25px; font-size: 12pt"> 
+Hi! I am a Postdoctoral Research Associate in the Department of Astrophysical Sciences at Princeton University. Before moving here, I was a Postdoctoral Scholar in the Department of Astronomy and Astrophysics at the University of Chicago, Illinois. I completed my PhD as a prestigious Shyama Prasad Mukherjee (SPM) research fellow at the Indian Institute of Science and Raman Research Institute, Bengaluru India, under a Joint Astronomy Programme. 
+
+
+</p>
+I specialize in theoretical astrophysical plasma physics, focusing on high-energy phenomena such as shocks, cosmic rays, and stellar feedback. My present research focuses on particle acceleration at collisionless shocks, kinetic plasma instabilities, and fluid modeling of cosmic rays. I use kinetic Particle-In-Cell and magnetohydrodynamic simulations, and analytic methods to study these problems.
+</intro> 
+
+
+   <!--== Recent updates ===-->
+   </br></br>
+   <h3>Research highlights</h3>
+   <div class="slideshow-container" style="max-width:100%; max-height:10%;">
+      <div class="mySlides fade">
+        <intro> My recent papers: <a href="https://ui.adsabs.harvard.edu/abs/2023arXiv231213365G"> Return Currents in Collisionless Shocks</a>
+        </intro>
+      </div>
+      <div class="mySlides fade">
+        <intro> My recent papers: <a href="https://ui.adsabs.harvard.edu/abs/2021arXiv210607672G"> Lepton-driven Bell Instability</a>
+        </intro>
+      </div>
+      <div class="mySlides fade">
+        <intro> My recent papers: <a href="http://adsabs.harvard.edu/abs/2019arXiv190607200G"> Cosmic ray two-fluid equations</a>
+        </intro>
+      </div>
+      <!-- <div class="mySlides fade" >
+        <intro> Media coverage of our work. co-authors: Biman Nath (RRI), Prateek Sharma (IISc), Yuri Shchekinov. <a href="https://researchmatters.in/article/stars-and-star-cluster-heat-their-environment-even-million-years-after-their-birth-say">Click here to know.</a>
+        </intro>
+       </div> --> 
+    </div>
+
+   </div>
+  <!--=============================================== -->
+
+  <!--================ About me ===================== -->
+  <div id="About me" class=tabcontent style="margin:2%;">
+  <h3> <a name="CV"></a> <font color="#e74c3c">Curriculum vitae </font> </h3>
+   <intro> 
+   <ul>
+    <li><a href="docs/sguptaCV-2023.pdf">My CV (PDF)</a></li>
+  </ul>  
+   </intro>
+  
+  <h3>  <font color="#e74c3c">From where ?</font> </h3>
+  
+    <intro> I am from Burdwan (Bardhaman), a town located on the shore of Damodar river in a district <a href="https://en.wikipedia.org/wiki/Bardhaman">Burdwan</a> in <a href="https://en.wikipedia.org/wiki/West_Bengal">West Bengal</a>, India. <!--My CV can be found here <a href="docs/CV.pdf">SID</a>.-->
+    </intro>   
+</br>
+</br>
+
+<div class="aboutme_slideshow-container";>
+
+<div class="aboutme_slides moveto">
+  <div class="numbertext">1/6</div>
+  <img src="images/cms.jpeg" style="width:100%">
+  <!--<div class="text"style="text-align: right; position: relative; width:90%; bottom: 50px; color: #f2f2f2;" >CMS high school</div> -->
+  <div class="captextam">CMS high school</div>
+</div>
+
+<div class="aboutme_slides moveto">
+  <div class="numbertext">2/6</div>
+  <img src="images/bmhs.jpeg" style="width:100%">
+  <div class="captextam">Municipal high school</div>
+</div>
+
+<div class="aboutme_slides moveto">
+  <div class="numbertext">3/6</div>
+  <img src="images/brc.jpeg" style="width:100%">
+  <div class="captextam">Raj College</div>
+</div> 
+
+<div class="aboutme_slides moveto">
+  <div class="numbertext">4/6</div>
+  <img src="images/iitkgp.jpeg" style="width:100%">
+  <div class="captextam">Indian Institute of Technology Kharagpur</div>
+</div> 
+
+<div class="aboutme_slides moveto">
+  <div class="numbertext">5/6</div>
+  <img src="images/iisc.jpeg" style="width:100%">
+  <div class="captextam">Indian Institute of Science Bangalore</div>
+</div>
+
+<div class="aboutme_slides moveto">
+  <div class="numbertext">6/6</div>
+  <img src="images/rri.jpeg" style="width:100%">
+  <div class="captextam">Raman Research Institute</div>
+</div> 
+ 
+</div>
+
+  <h3> <a name="aboutme_academic"></a> <font color="#e74c3c"> Academic Journey </font> </h3>
+
+    <div class="timeline">
+
+       <div class="timelinecontainer timelineleft">
+        <div class="timelinecontent">
+         <b> September 2023 </b>
+         <p>
+          I have recently joined a postdoctoral research associate position in the Dept of Astrophysical Sciences at <a href="https://web.astro.princeton.edu/">Princeton University</a>.
+         </p>
+        </div>
+       </div>
+
+       <div class="timelinecontainer timelineright">
+        <div class="timelinecontent">
+         <b> December 2019 </b>
+         <p>
+          I relocated to Chicago to take a role of a postdoctoral scholar in the <a href="https://astrophysics.uchicago.edu/">University of Chicago</a> until August 2023.
+         </p>
+        </div>
+       </div>
+
+       <div class="timelinecontainer timelineleft">
+        <div class="timelinecontent">
+         <b> August 2014 </b>
+         <p>
+       I moved to Bengaluru to join my PhD graduate school at the Indian Institute of Science 
+      (<a href="http://www.iiscnet.in/">IISc</a>), Bengaluru. 
+      I was enrolled under the Joint Astronomy Programme 
+      (<a href= "http://www.physics.iisc.ernet.in/%7Ejap/">JAP</a>) 
+      as a prestigious Shyama Prasad Mukherjee (SPM) research fellow. 
+      As a graduate student in the JAP, I worked with Prof. Biman Nath at Raman Research Institute (<a href="http://www.rri.res.in/">RRI</a>) 
+      and Prof. Prateek Sharma at <a href="http://www.iiscnet.in/">IISc</a>, India.
+         </p>
+        </div>
+       </div>
+
+       <div class="timelinecontainer timelineright">
+        <div class="timelinecontent">
+         <b> August 2012 </b>
+         <p>
+     Pursuing Master of Science (MSc) in the dept of Physics at Indian Institute
+     of Technology Kharagpur (<a href="http://iitkgp.ac.in/">IIT Kgp</a>) was
+     the most important time in my academic carrier. During a one-year long project
+     with Prof. Sayan Kar, I decided to take theoretical astrophysics
+     as a broad area of research. I completed MSc in 2014 with a first
+     rank in the physics dept, and left IIT kgp to explore my area of interest.
+         </p>
+        </div>
+       </div>
+
+
+       <div class="timelinecontainer timelineleft">
+        <div class="timelinecontent">
+         <b> June 2009 </b>
+         <p>
+I developed a passion for Physical Science and Mathematics during my school years. I pursued a career in Physics at <href="http://www.burdwanrajcollege.ac.in"> Burdwan Raj College</a>, graduating with a first rank in Bachelor of Science (BSc) Physics honors from the <a href="http://www.buruniv.ac.in"> University of Burdwan</a> in 2012.
+         </p>
+        </div>
+       </div>
+
+       <div class="timelinecontainer timelineright">
+        <div class="timelinecontent">
+         <b> 2009 and before </b>
+         <p>
+
+I began my academic journey at National School, followed by primary education (class I to IV) at Burdwan Church Missionary Society High School (<a href="http://www.burdwancms.in/">CMS</a>). Subsequently, I completed higher secondary at Burdwan Municipal High School (<a href="http://www.bmhschool.com">BMHS</a>).
+
+         </p>
+        </div>
+       </div>
+
+
+
+    </div>
+
+  <h3> <a name="aboutme_refresho"></a> <font color="#e74c3c"> Non-Academic Journey! </font> </h3>
+  <intro>
+  In free times, I like playing guitar, singing <a href="https://www.youtube.com/channel/UCqhixhebff53JdjAbigRUEQ">(youtube)</a>, and drawing. Here are some selected drawings attached below.
+  </intro>
+  
+   <div>
+   <img id="myDraw" src="images/drawing1.jpg" style="width:270px; height:200px; position: relative; float:left; padding:1em" >
+   <img id="myDraw" src="images/drawing2.jpg" style="width:270px; height:200px; position: relative; float:left; padding:1em" >  
+   <img id="myDraw" src="images/drawing3.png" style="width:270px; height:200px; position: relative; float:left; padding:1em " >
+   
+   
+   </div>
+   
+   </br>
+   </br>
+  </div>
+  
+  <!--=============================================== -->
+
+
+  <!--================ Research ===================== -->
+  <div id="Research" class="tabcontent" style="margin:2%;">
+   
+   <h3> <a name="research_interests"></a><font color="#e74c3c">Interests</font></h3>
+   <intro> 
+   <ul>
+    <li>Kinetic Plasmas</li>
+    <li>Cosmic rays </li>
+    <li>Numerical methods</li>
+    <li>Gravity</li>
+  </ul>  
+
+  <h3> <a name="research_collaborators"></a><font color="#e74c3c">Collaborators</font> </h3>
+  <a href="https://astro.uchicago.edu/~caprioli/" >Damiano Caprioli (Postdoc advisor)</a>, University of Chicago, IL, USA.</br> 
+  <!-- <a href="">David Eichler</a>, Ben-Gurion University, Israel.</br> -->
+  <a href="https://colbyhaggerty.com/" >Colby Haggerty</a>, University of Hawaii, USA</br>
+  <a href="http://personalpages.to.infn.it/~mignone/">Andrea Mignone</a>, University of Torino, Italy.</br>
+  <a href="http://www.rri.res.in/~biman/"> Biman Nath (PhD advisor)</a>, Raman Research Insitute Bangalore, India.</br>
+  <a href="http://www.physics.iisc.ernet.in/~prateek/" >Prateek Sharma (PhD advisor)</a>, Indian Institute of Science Bangalore, India.</br>
+  <a href="">Yuri Shchekinov</a>, Lebedev Physical Institute Moscow, Russia.</br>
+  <a href="https://www.astro.princeton.edu/~anatoly/">Anatoly Spitkovsky (Postdoc advisor)</a>, Princeton University, NJ, USA.</br>
+  <p> 
+
+
+ <h3> <a name="research_summary"></a><font color="#e74c3c">Research summary</font> </h3>
+  To know our contributions, click on the tabs below.
+ </intro>
+ 
+ 
+    <button class="accordion" style="position:relative"> Electron acceleration at non-relativistic collisionless shocks </button>
+<div class="panel">
+  <p> 
+  Energetic charged particles, commonly referred to as cosmic rays, are one of the main contributors to the nonthermal energies in the universe. Although diffusive shock acceleration (DSA) is the promising mechanism for particle acceleration at shocks, the processes that promote electrons to DSA remain unclear. To solve this problem, we have performed first-principles kinetic particle-in-cell simulations of collisionless shocks, exploring a wide range of shock speeds, Alfvénic, and sonic Mach numbers. I will report under which conditions electrons participate in the DSA at quasi-parallel shocks. The results are key to understanding the nonthermal phenomenology of a variety of heliophysical/astrophysical sources that shine in radio, X-rays, and gamma-rays.
+</br>
+Ref.</br> 
+1. Gupta et al (2023); <a href="https://doi.org/10.22323/1.444.0396">[NASA/ADS]</a>; <a href="https://doi.org/10.22323/1.444.0396">ICRC 2023 proceeding</a>; <a href="https://doi.org/10.22323/1.444.0396">arXiv</a> 
+</div>
+
+
+ 
+   <button class="accordion" style="position:relative"> Magnetic field amplification due to cosmic ray driven kinetic plasma instability </button>
+<div class="panel">
+  <p> 
+  A strong super-Alfvénic drift of energetic particles (or cosmic rays) in a magnetized plasma can amplify the magnetic field significantly through nonresonant streaming instability (NRSI). While the traditional analysis is done for an ion current, here we use kinetic particle-in-cell simulations to study how the NRSI behaves when it is driven by electrons or by a mixture of electrons and positrons. In particular, we characterize the growth rate, spectrum, and helicity of the unstable modes, as well the level of the magnetic field at saturation. Our results are potentially relevant for several space/astrophysical environments (e.g., electron strahl in the solar wind, at oblique nonrelativistic shocks, around pulsar wind nebulae), and also in laboratory experiments. 
+</br>
+Ref.</br> 
+1. Gupta et al (2021); <a href="https://ui.adsabs.harvard.edu/abs/2021ApJ...923..208G">[NASA/ADS]</a>; <a href="https://ui.adsabs.harvard.edu/abs/2021ApJ...923..208G">ApJ</a>; <a href="https://arxiv.org/abs/2106.07672">arXiv</a>
+ </br>
+2. Gupta et al (2022); <a href="https://ui.adsabs.harvard.edu/abs/2022icrc.confE.484G">[NASA/ADS]</a>; <a href="https://ui.adsabs.harvard.edu/abs/2022icrc.confE.484G">ICRC 2021 proceeding</a>; <a href="https://arxiv.org/abs/2110.12426">arXiv</a> 
+</div>
+
+ 
+  <button class="accordion" style="position:relative"> Closure problem in cosmic ray two-fluid equations</button>
+<div class="panel">
+  <p> 
+ Cosmic rays (CRs) are frequently modelled as an additional fluid in hydrodynamic (HD) and magnetohydrodynamic (MHD) simulations of astrophysical flows. The standard CR two-fluid model is described in terms of three conservation laws (expressing conservation of mass, momentum, and total energy) and one additional equation (for the CR pressure) that cannot be cast in a satisfactory conservative form. The presence of non-conservative terms with spatial derivatives in the model equations prevents a unique weak solution behind a shock. We investigate a number of methods for the numerical solution of the two-fluid equations and find that, in the presence of shock waves, the results generally depend on the numerical details (spatial reconstruction, time stepping, the CFL number, and the adopted discretization). All methods converge to a unique result if the energy partition between the thermal and non-thermal fluids at the shock is prescribed using a subgrid prescription. This highlights the non-uniqueness problem of the two-fluid equations at shocks. From our numerical investigations, we report a robust method for which the solutions are insensitive to the numerical details even in absence of a subgrid prescription, although we recommend a subgrid closure at shocks using results from kinetic theory. The subgrid closure is crucial for a reliable post-shock solution and also its impact on large-scale flows because the shock microphysics that determines CR acceleration is not accurately captured in a fluid approximation. Critical test problems, limitations of fluid modelling, and future directions are discussed. 
+</br>
+Ref.</br> 
+1. Gupta et al (2020); <a href="https://ui.adsabs.harvard.edu/abs/2019arXiv190607200G/abstract">[NASA/ADS]</a>; <a href="https://ui.adsabs.harvard.edu/abs/2019arXiv190607200G/abstract">MNRAS</a>; <a href="https://arxiv.org/abs/1906.07200">arXiv</a> 
+</div>
+
+ 
+<button class="accordion" style="position:relative"> Solution to Neon isotope problem in Galactic cosmic rays</button>
+<div class="panel">
+  <p>
+Cosmic ray (CR) sources leave signatures in the isotopic abundances of CRs. Current models of Galactic CRs that consider supernovae (SNe) shocks as the main sites of particle acceleration cannot satisfactorily explain the higher 22Ne/20Ne ratio in CRs compared to the interstellar medium. Although stellar winds from massive stars have been invoked, their contribution relative to SNe ejecta has been taken as a free parameter. Here, we present a theoretical calculation of the relative contributions of wind termination shocks (WTSs) and SNe shocks in superbubbles, based on the hydrodynamics of winds in clusters, the standard stellar mass function, and stellar evolution theory. We find that the contribution of WTSs towards the total CR production is at least 25 percent, which rises to ≳ 50 per cent for young (≲10 Myr) clusters, and explains the observed 22Ne/20Ne ratio. We argue that since the progenitors of apparently isolated supernovae remnants (SNRs) are born in massive star clusters, both WTS and SNe shocks can be integrated into a combined scenario of CRs being accelerated in massive clusters. This scenario is consistent with the observed ratio of SNRs to γ-ray bright (Lγ ≳ 1e35 erg/s) star clusters, as predicted by star cluster mass function. Moreover, WTSs can accelerate CRs to PeV energies, and solve other long-standing problems of the standard SN paradigm of CR acceleration.
+
+</br>
+Ref.</br> 
+1. Gupta et al (2020) MNRAS 493, 3159; <a href="https://ui.adsabs.harvard.edu/abs/2020MNRAS.493.3159G/abstract">[NASA/ADS]</a>; <a href="https://doi:10.1093/mnras/staa286">MNRAS</a>; <a href="https://arxiv.org/abs/1910.10168">arXiv</a> 
+</div>
+
+
+ <button class="accordion">Impact of cosmic rays in young star clusters</button>
+  <div class="panel">
+  <p>
+  
+  <div class="slideshow-container" style="float: right; padding:1em; max-width:40%;max-height:50%;">
+     <video width=100% controls loop; style="float: right; width:95%;">
+     <source src="video/evo_prs.mp4"  type="video/mp4">
+    </video>
+       <div class="text" style="float: right; padding:1em; font-size:12.5px" >  Movie 2: The time evolution of thermal (red) and CR (blue) pressure profiles in an interstellar bubble. The dotted-red curve shows thermal pressure profile for one-fluid (i.e. cosmic rays) bubble.</div> 
+     </br>     
+  </div>
+  Winds and supernovae drive shocks and produce all necessary conditions to accelerate high energy particles (e.g. Cosmic rays (CRs)). Despite the observations over a century, there are many aspects of CRs that are still unknown, e.g. from where do they come from? are they accelerated in supernova shocks or in stellar winds? To understand this problem, we have developed an analytical model and performed 1D and 3D simulations. We have calculated various observables which will be useful to understand high energy activity in star clusters.
+  </p>
+Paper I: We develop a two-fluid model of an interstellar bubble (ISB) where cosmic rays are considered as the second fluid. We show that diffusive shock acceleration can be an effective process in changing the thermal properties of an ISB. Movie 2 shows the time evolution of thermal and CR pressure profiles in a two-fluid interstellar bubble. The enhancement of CR pressure at the reverse shock (wind termination shock) represents the diffusive shock acceleration. Once the CR pressure becomes larger than thermal pressure, the shock becomes very smooth representing the globally smooth solution of the two-fluid model. This simulation is performed using a code which is written by me. Details of the code can be found <a href="SHOBDO/shobdo.html">here</a>.
+</p>
+ Paper II: In continuation with Paper I, we estimate gamma-ray, x-ray, and radio (thermal and nonthermal) luminosities and compare them with observations. In this study, we show how a compact star cluster can produce diffuse gamma-ray. We also discuss the role of
+thermal and non-thermal radio, and X-rays in constraining the high energy activity in young star clusters. Movie 3 displays the surface brightness map of an ISB in multi-waveband.  
+<img src="images/all_map.jpeg" style="float:left; padding:0.5em; max-width:100%;max-height:35%; border-radius: 5px;" class="wrap align-ri    ght">
+ <div class="text" style="float: left; padding:0.7em; font-size:12.5px" >  Movie 3: Surface brightness map of an ISB in different waveband. The colour palettes are shown in right side of respective panels. For details, see <a href="http://adsabs.harvard.edu/abs/2018arXiv180405877G">Gupta, Nath & Sharma (2018)</a>
+</div> </img>
+ </br>
+ Ref: </br>
+ 1. Gupta et al. (2018) MNRAS, 473, 1537; <a href="http://adsabs.harvard.edu/abs/2017arXiv170510448G">[NASA/ADS]</a>; <a href="https://doi.org/10.1093/mnras/stx2427">MNRAS</a>; <a href="https://arxiv.org/abs/1705.10448">arXiv</a>
+ </br>
+ 2. Gupta et al (2018) MNRAS 479, 5220; <a href="http://adsabs.harvard.edu/abs/2018arXiv180405877G">[NASA/ADS]</a>; <a href="https://doi.org/10.1093/mnras/sty1846">MNRAS</a>; <a href="https://arxiv.org/abs/1804.05877">arXiv</a> 
+  </p>
+  </p> 
+  </p>
+ </div>
+ 
+
+
+ <button class="accordion">Radiation from young star clusters</button>
+  <div class="panel">
+  <div class="slideshow-container" style="float: left; padding:1em; max-width:60%;max-height:60%;">
+     <video width=100% controls loop; style="float: left; width:95%;">
+     <source src="video/isb_rad.mp4"  type="video/mp4">
+    </video>
+       <div class="text" style="float: right; padding:1em; font-size:12.5px" >  Movie 1: Effects of stellar radiation + wind + SNe in ISM. The top panel shows the mechanical power (green) and radiation bolometric luminosity (violet). The pointers indicate the instantaneous power at that epoch. The bottom two panels show temperature (red) and density (blue) profiles of an interstellar bubble. The bottom-right panel displays the zoomed-in view of the swept-up ISM (also known as shell) in the shock frame. The effect of first supernova, radiation heating and formation of the neutral shell are clearly seen from this movie.</div> 
+     </br>     
+  </div>
+  <p>
+  Star clusters are one of the most energetic sources in a galaxy. They emit wind and radiation which are so energetic that they can expel gas from their vicinity. Observers have found such gas expulsion, however, the driving mechanism was not clear. 
+<p>
+We have studied this problem by considering the time evolution of a star cluster. We use a realistic Initial Mass Function (IMF) and include stellar winds (source of mechanical energy) and radiation in our analysis. After ~3 Myr when one-by-one massive stars die through supernova explosion, they also provide mechanical energy. However, the radiation power decreases with time. Therefore, the contribution from wind and radiation depend on the age of the star cluster. Using 1D numerical simulations, we show that radiation pressure can push the gas before 1 Myr. After 1 Myr, the expansion is controlled by mechanical power and radiation heating. Movie 1, shown here, displays the time evolution of various profiles due to interactions of stellar wind and radiation with the ambient medium.
+  </p>
+ Ref:</br> Gupta et al. (2016) MNRAS, 462, 4532; <a href="http://adsabs.harvard.edu/abs/2016MNRAS.462.4532G"> [NASA/ADS]</a>; <a href="https://academic.oup.com/mnras/article-abstract/462/4/4532/2589901/How-radiation-affects-superbubbles-through?redirectedFrom=fulltext">MNRAS</a>; <a href="https://arxiv.org/abs/1606.09127"> arXiv</a>
+  </p>
+  </br>
+ </div>
+ 
+
+ <button class="accordion" style="position:relative"> A Modified Newtonian gravity</button>
+<div class="panel">
+  <p> My MSc thesis was focused on the applications of a modified Newtonian gravity in various astrophysical objects. This study involved a phenomenological approach which combines strong field and weak field gravities. With my advisor, Prof. Sayan Kar at IIT Kgp, we investigated the non-singular collapse of gas cloud and galaxy rotation curve.
+</br>
+Ref.</br> 
+1. Gupta, S. 2014, <a href="docs/SiddharthaMScThesis.pdf">MScThesis</a>, IIT Kharagpur.</p>
+</div>
+
+
+ 
+ </p>
+  
+  <h3> <a name="research_presentation"></a><font color="#e74c3c">Selected talks/posters</font> </h3>
+  Talks </br>
+  1. 26th June 2018 at the "<a href="https://crism2018.sciencesconf.org/">4th CRISM</a>" 
+     conference in Grenoble, France <a href="https://zenodo.org/record/1300389">(slides)</a> </br>
+  2. 13th June 2018 at the "<a href="http://www.rri.res.in/bubble/bubble.html">Bubble Big and small</a>" 
+     conference at IISc, Bangalore, India <a href="http://www.rri.res.in/bubble/talks/Gupta.pdf">(slides)</a></br>
+  </br>
+  Posters </br>
+  1. 9-13th May 2016 at the annual Meeting of Astronomical Society of India at Srinagar. <a href="docs/asi_radfb2016.pdf">ClickHereToSee</a>
+  
+  <h3><a name="research_publications"></a><font color="#e74c3c">Publications</font></h3>
+  <a href="https://scholar.google.com/citations?user=JjIFsH4AAAAJ&hl=en"> 
+    Google scholar
+  <!-- <img src="images/gs.png" style="max-width:1in; position: center " >  -->
+   </a>
+   </br>
+    <a href="https://www.researchgate.net/profile/Siddhartha_Gupta11"> 
+    Researchgate
+  <!--<img src="images/rg.png" style="max-width:1.2in; position: center " >  -->
+   </a> 
+    </br>
+   <a href="https://arxiv.org/find/all/1/au:+Gupta%5fSiddhartha/0/1/0/all/0/1"> 
+   <!-- <img src="images/arxiv.png" style="max-width:0.8in; position: center " >  -->
+   arXiv
+   </br>
+   </a>
+   <a href=
+"https://ui.adsabs.harvard.edu/search/filter_author_facet_hier_fq_author=AND&filter_author_facet_hier_fq_author=author_facet_hier%3A%221%2FGupta%2C%20S%2FGupta%2C%20Siddhartha%22&fq=%7B!type%3Daqp%20v%3D%24fq_database%7D&fq=%7B!type%3Daqp%20v%3D%24fq_author%7D&fq_author=(author_facet_hier%3A%221%2FGupta%2C%20S%2FGupta%2C%20Siddhartha%22)&fq_database=database%3A%20astronomy&q=pubdate%3A%5B2016-01%20TO%202023-12%5D%20author%3A(%22%5EGupta%2C%20Siddhartha%22)&sort=date%20desc%2C%20bibcode%20desc&p_=0">  <!--  <img src="images/nasaads.png" style="max-width:0.8in; position: center " >  -->
+  NASA ADS
+   </a> 
+   </br>
+   </p>
+  
+
+</div>
+  <!--=============================================== -->
+
+<!--================== Movies ================== -->
+ <div id="Movies" class="tabcontent" style="margin:2%;" >
+
+   <!-- Simulation  1 -->
+   <h3> <a name=""></a><font color="#e74c3c">A 3D simulation of a compact star cluster</font></h3>
+   <intro>
+   <ul>
+      <video width=50% controls>
+       <source src="video/3dstarcluster.mp4"  type="video/mp4">
+      </video>
+      <div class="text" style="position: lower-left; padding:0.5em; width:50%; font-size:12.5px" > [Left] Density slice at z = 0; [Right] Projected map; [Bottom] Input power. What happens when a young star cluster interacts with the interstellar medium. For youtube link: <a href="https://youtu.be/dPpGB4LbFpU">click here</a></div> 
+   </ul> 
+   </intro>
+   <!--  simulation end --> 
+
+   <!-- Simulation  2 -->
+   <h3> <a name=""></a><font color="#e74c3c">Kinetic plasma instability</font></h3>
+   <intro>
+   <ul>
+      <video width=50% controls>
+      <source src="video/nrsi.mp4"  type="video/mp4">
+      </video>
+      <div class="text" style="position: lower-left; padding:0.5em; width:50%; font-size:12.5px" > [Top] CR Proton driven Bell Instability; [Bottom] CR Electron driven Bell Instability</div>
+   </ul>
+   </intro>
+   <!--  simulation end -->   
+
+   <!-- Simulation  3 -->
+   <h3> <a name=""></a><font color="#e74c3c">Electron-Proton Collisionless Shock</font></h3>
+   <intro>
+   <ul>
+      <video width=70% controls>
+      <source src="video/QuasiParallelShock.m4v"  type="video/mp4">
+      </video>
+      <div class="text" style="position: lower-left; padding:0.5em; width:50%; font-size:12.5px" > Evolution of a quasi-parallel shock</div>
+   </ul>
+   </intro>
+   <!--  simulation end -->
+
+
+  </div> 
+  <!--=============================================== -->
+  
+
+  <!--================== Code ================== -->
+  <div id="Code" class="tabcontent" style="margin:2%;" >
+  <p>Until now, I have used the following codes in my research projects</p>
+ 
+ <h3><font color="#e74c3c">Magneto-hydrodynamic simulations</font> </h3>
+  <ul>
+  <li> <h3 style="line-height:2px">PLUTO (programming language C, python interface)</h3> </li>
+  <p style=" max-width:100%;"> PLUTO is a multi-dimensional code, develoved by Prof. A. Mignone + Group. For details visit <a href="http://plutocode.ph.unito.it/index.html">PLUTO</a>.</p>
+   <li> <h3 style="line-height:2px">SHOBDO (C, python interface) </h3> </li>
+  <p style=" max-width:100%;"> It is a two-fluid hydro code written by me to study gas + cosmic ray shock. For details, click here <a href="SHOBDO/shobdo.html">SHOBDO</a>.</p>
+  <li> <h3 style="line-height:2px">ZEUS-MP (fortran75)</h3> </li>
+  <p style=" max-width:100%;"> This is one of the popular codes in astrophysics. Details can be found <a href="http://www.astro.princeton.edu/~jstone/zeus.html">here</a>.</p>
+  </ul>
+
+  <h3><font color="#e74c3c">Kinetic simulations</font> </h3>
+   <ul>
+  <li> <h3 style="line-height:2px">TRISTAN (fortran90)</h3> </li>
+  <p style=" max-width:100%;"> It is a Particle-In-Cell code. The details can be found <a href="https://github.com/ntoles/tristan-mp-pitp">here</a>.</p>
+  <li> <h3 style="line-height:2px">Konica (C, python interface)</h3> </li>
+  <p style=" max-width:100%;"> Under construction.</p>
+   </ul>
+
+  <h3><font color="#e74c3c">Analysis codes</font> </h3>
+   <ul>
+  <li> <h3 style="line-height:2px">fluid (C)</h3> </li>
+  <p style=" max-width:100%;"> This is written by me for analyzing data files for the PLUTO and Shobdo codes. <a href="AA">Under construction</a>.</p>
+  <li> <h3 style="line-height:2px">particles (python)</h3> </li>
+  <p style=" max-width:100%;"> For analyzing TRISTAN output <a href="AA">Under construction</a>.</p>
+   </ul>
+
+  <h3><font color="#e74c3c">Visualizations</font> </h3>
+  <ul>
+ <li> <h3 style="line-height:2px">MYTH (python) </h3> </li>
+  <p style=" max-width:100%;"> MYTH is a multipurpose YT-rendering code especially designed to compile the <a href="https://yt-project.org/">yt-rendering</a>. For details, click here <a href="MYTH/myth.html">MYTH</a>.</p>
+   </ul>
+  
+  <h3><font color="#e74c3c">C header files</font> </h3>
+  It is always good to have your own header files.
+   <ul>
+  <li> <a href="codes/polyfit.h">polyfit.h</a> </li>
+  <li> <a href="codes/bezier.h">bezier.h</a> </li>
+  ... many more to be uploaded. For any clarification please write an email (see <a href="#contact" onclick="openTab(event, 'Contact')">Contact</a>).
+    </ul>
+ 
+  </div>
+  <!--=============================================== -->
+  
+  <!--================== Gallery ==================== -->
+  <div id="Gallery" class="tabcontent" autofocus="autofocus"  style="margin:2%;">
+   
+    <div class="slideshow-container" style="margin-left:05%; max-width:90%; margin-right:05%; max-height:50%; float:middle">
+    <div class="myGallery">
+        <div class="numbertext">1 / 2</div>
+        <img src="images/jaisalmer.jpg" style="width:100%; position: center ">
+        <div class="captext">The Golden city (Jaisalmer) in Rajasthan, India</div>
+     </div>
+     
+      <div class="myGallery">
+        <div class="numbertext">2 / 2</div>
+        <img src="images/kashmir.jpg" style="width:100%; position: center " >
+        <div class="captext">Pahalgam, a town in Jammu & Kashmir, India</div>
+      </div>
+
+      <a class="prev" onclick="plusSlides(-1)"><(</a>
+      <a class="next" onclick="plusSlides(1)">)></a>
+    </div>
+   
+  </div>
+  <!--=============================================== -->
+  
+  <!--================ Contact ========================== -->
+  <div id="Contact" class=tabcontent style="margin:2%;">
+    <h3>Office</h3>
+    <contact>
+       Peyton Hall 124<br/>
+       Dept of Astrophysical Sciences <br/>
+       Princeton University <br/>
+       4 Ivy Ln, Princeton, NJ 08544, United States <br/>
+       Email      : gsiddhartha@princeton.edu <br/>
+    </contact>
+
+  <!--=============================================== -->
+  </br>
+  </br>
+</div> 
+
+<button onclick="topFunction()" id="scrollup" title="Go to top">TOP</button>
+</article>
+
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("scrollup").style.display = "block";
+    } else {
+        document.getElementById("scrollup").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+</script>
+
+<script>
+function openTab(evt, cityName) {
+    var i, tabcontent, tablinks, btnlinks;
+    
+    /*btnlinks = document.getElementsByClassName("dropbtn");
+    btnlinks[0].style.display = "none";*/
+    
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("dropbtn");
+    
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+        
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";   
+}
+document.getElementById("defaultOpen").click();
+</script>
+
+
+<script>
+var myIndex = 0;
+carousel();
+function carousel() {
+    var i;
+    var x = document.getElementsByClassName("mySlides");
+    for (i = 0; i < x.length; i++) {
+       x[i].style.display = "none";  
+    }
+    myIndex++;
+    if (myIndex > x.length) {myIndex = 1}    
+    x[myIndex-1].style.display = "block";  
+    setTimeout(carousel, 3500); // Change image every 2 seconds
+}
+</script>
+
+<script>
+var slideIndex_aboutme = 0;
+showSlides_aboutme();
+
+function showSlides_aboutme() {
+    var i;
+    var slides = document.getElementsByClassName("aboutme_slides");
+    /*var dots = document.getElementsByClassName("dot");*/
+    for (i = 0; i < slides.length; i++) {
+       slides[i].style.display = "none";  
+    }
+    slideIndex_aboutme++;
+    if (slideIndex_aboutme> slides.length) {slideIndex_aboutme = 1}    
+    /*for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }*/
+    slides[slideIndex_aboutme-1].style.display = "block";  
+    /*dots[slideIndex_aboutme-1].className += " active";*/
+    setTimeout(showSlides_aboutme, 2000); // Change image every 2 seconds
+}
+</script>
+
+<script>
+    var slideIndex = 1;
+    showSlides(slideIndex);
+    function plusSlides(n) {
+      showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+    var i;
+    var slides = document.getElementsByClassName("myGallery");
+    var dots = document.getElementsByClassName("dot");
+    if (n > slides.length) {slideIndex = 1}    
+    if (n < 1) {slideIndex = slides.length}
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+    }
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex-1].style.display = "block";  
+    dots[slideIndex-1].className += " active";
+    
+    }
+</script>
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight){
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
+  });
+}
+</script>
+
+
+  
+<footer>
+Thank you for the visit!
+<script>
+expireDate = new Date
+  expireDate.setMonth(expireDate.getMonth()+6)
+  jcount = eval(cookieVal("jaafarCounter"))
+  jcount++
+  document.cookie = "jaafarCounter="+jcount+";expires=" + expireDate.toGMTString()
+
+  function cookieVal(cookieName) {
+  thisCookie = document.cookie.split("; ")
+  for (i=0; i<thisCookie.length; i++){
+    if (cookieName == thisCookie[i].split("=")[0]){
+     return thisCookie[i].split("=")[1]
+    }
+  }
+  return 0
+}
+
+function page_counter(){
+  for (i=0;i<(7-jcount.toString().length);i++)
+    document.write('<span class="counter">0</span>')
+    for (y=0;y<(jcount.toString().length);y++)
+      document.write('<span class="counter">'+jcount.toString().charAt(y)+'</span>')
+}
+</script>
+
+<div style="float:left; color:#e3e5e5">
+Last updated on December 2023
+</div>
+
+<div style="float:right; color:#e3e5e5">
+copyright@Siddhartha
+<!-- hitwebcounter Code START -->
+<a href="https://www.hitwebcounter.com" target="_blank">
+<img src="https://hitwebcounter.com/counter/counter.php?page=7544840&style=0008&nbdigits=9&type=page&initCount=0" title="Web Counter" Alt="counter free"   border="0" >
+</a>   
+<!--<script>page_counter(jcount); </script> -->
+</div>
+</footer>
 
 </body>
-</html> 
+</html>
