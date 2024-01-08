@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<!-- ==== Define Heading ===== -->
+<head>
+    <title>MytH</title>
+    <link rel="stylesheet" href="../sg_style.css">
+</head>
+<style>
+body{
+    margin: 0;
+    background-color: black;
+    /*background-image: url("images/OW1Sew.jpg");
+    background-size: auto, auto, cover;
+    padding: 0;*/
+}
+img {
+    width: 100%;
+    height: auto;
+}
+.row:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+[class*="col-"] {
+    float: left;
+    padding: 15px;
+    width: 100%;
+}
+@media only screen and (min-width: 600px) {
+    .col-s-1 {width: 8.33%;}
+    .col-s-2 {width: 16.66%;}
+    .col-s-3 {width: 25%;}
+    .col-s-4 {width: 33.33%;}
+    .col-s-5 {width: 41.66%;}
+    .col-s-6 {width: 50%;}
+    .col-s-7 {width: 58.33%;}
+    .col-s-8 {width: 66.66%;}
+    .col-s-9 {width: 75%;}
+    .col-s-10 {width: 83.33%;}
+    .col-s-11 {width: 91.66%;}
+    .col-s-12 {width: 50%;}
+}
+@media only screen and (min-width: 768px) {
+    .col-1 {width: 8.33%;}
+    .col-2 {width: 16.66%;}
+    .col-3 {width: 19%;}
+    .col-4 {width: 55%;}
+    .col-5 {width: 41.66%;}
+    .col-6 {width: 35%;}
+    .col-7 {width: 58.33%;}
+    .col-8 {width: 66.66%;}
+    .col-9 {width: 75%;}
+    .col-10 {width: 83.33%;}
+    .col-11 {width: 91.66%;}
+    .col-12 {width: 100%;}
+}
+html {
+    font-family: "Lucida Sans", sans-serif;
+}
+.header {
+    background-color: #9933cc;
+    color: #ffffff;
+    padding: 15px;
+}
+.menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.menu li {
+    padding: 8px;
+    margin-bottom: 7px;
+    background-color :#33b5e5;
+    color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.menu li:hover {
+    background-color: #0099cc;
+}
+.aside {
+    background-color: #33b5e5;
+    padding: 15px;
+    color: #ffffff;
+    text-align: center;
+    font-size: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.footer {
+    background-color: #0099cc;
+    color: #ffffff;
+    text-align: center;
+    font-size: 12px;
+    padding: 15px;
+}
+</style>
+
+<!-- ==== Define style ===== -->
+
+<!-- ==== Main body starts ===== -->
+<body oncontextmenu="return false">
+<article>
+<h1>
+<div style="text-align: center;"> M Y T H </div>
+<div style="text-align: center; font-size:25px">A Multipurpose code compiles YT-rendering for Hydro-simulations</div>
+</h1>
+
+<div class="container">
+  <a href="#Introduction" class="dropbtn" onclick="openTab(event, 'Introduction')" id="defaultOpen">Introduction</a>
+  <a href="#methodology" class="dropbtn" onclick="openTab(event, 'Methodology')">Methodology</a>
+  <div href="#testproblems" class="dropdown" >
+    <button href="#testproblems" class="dropbtn" onclick="openTab(event, 'TestProblems')" >TestRun</button>
+    <div class="dropdown-content">
+      <a href="#testproblem_advection" class="dropbtn" onclick="openTab(event, 'TestProblems')" >Test1</a>
+    </div>
+  </div>
+  <a href="#download"     class="dropbtn" onclick="openTab(event, 'Download')">Download</a>
+  <a href="#developer" class="dropbtn" onclick="openTab(event, 'Developer')">Developer</a>
+  <!-- <a href="../index.html" class="dropbtn" style="float:right" onclick="openTab(event, 'Download')">Siddhartha's homepage</a> -->
+</div>
+
+<div class="tabmenu">
+
+  <!--================ Introduction ========================== -->
+  <div id="Introduction" class=tabcontent style="margin:2%;">
+   <div class="slideshow-container" style="float:left; padding:2em; max-width:39%;max-height:35%;" class="wrap align-left">
+     <video width=100% controls loop; style="float: center; width:100%;" >
+     <source src="video/myth.mp4"  type="video/mp4">
+    </video>
+    <div class="text" style="float: center; padding:0.1em; font-size:12.5px" > 3D visualization using MYTH.
+  </div>    
+
+ </div>
+    </br>   
+    <!-- <h3><a name="#Introduction"></a><font color="#e74c3c">Introduction</font></h3> -->
+    <intro style="line-height:25px; font-size: 12pt"> 
+   M Y T H is a multipurpose YT-rendering code especially designed 
+ to compile "yt volume rendering" (<a href="https://yt-project.org/">https://yt-project.org/</a>).   
+
+</p>
+ MYTH currently supports the output of a hydro code <a href="http://plutocode.ph.unito.it/index.html">PLUTO</a> in dbl format for both uniform and nonuniform grid distributions. We aim to provide supports for other formats in its future release. Design of the MYTH code is such that it can be generalized to read hydro variables (e.g., density) from the fluid as well as kinetic plasma simulations.
+</p>
+ To see some tests, click on "TestRun".
+
+</p>
+ Please note, the MYTH code is neither connected with the yt community nor it wants to violate any copyright of the yt-project. The main intention of developing MYTH is to provide a simple user-friendly interface to compile yt-rendering. Users are strongly encouraged to include references for both the yt-project and MYTH if this code is used.
+ </intro> 
+
+</br>
+</div>
+
+   <!--================ TestProblems ===================== -->
+  <div id="Methodology" class="tabcontent" style="margin:2%;">
+   <intro> 
+   <div class="slideshow-container" style="float: right; padding:1em; max-width:100%;max-height:100%;">
+    <img src="images/mythsch.jpeg" style="float:left; padding:1.em; max-width:100%;max-height:100%;" class="wrap align-center"> 
+   </div>
+    </br> 
+   </p> 
+  </intro>
+  
+
+  </div>
+  <!--=============================================== -->
+
+  <!--================ TestProblems ===================== -->
+  <div id="TestProblems" class="tabcontent" style="margin:2%;">
+
+  <intro>
+After successful installation, you may wish to run a test job.
+For installation guide, please download MYTH from the Download tab and then follow all steps in READ.md.
+
+</p>
+Test run can be performed as follows.
+</p>
+
+In MYTH/test/plutodata_neqg/, sample data files (data.0004.dbl,grid.out,stars.0004.txt) are provided. Data is in 3D cartesian coordinate, nx*ny*nz = 200*60*80. 
+</p>
+
+</p>
+Open terminal and go to the MYTH directory and then type
+</p>
+ cd src
+</p>
+Look into user_input.py file. You will notice:
+</p>
+ InputPath  = "../test/plutodata_neqg/".
+</p>
+ OutputPath = "../test/myth-pluto-neqg/".
+</p>
+It means, if you run MYTH then it will generate output at ../test/myth-pluto-neqg/. 
+To run MYTH, use the following command on the terminal (note: your current directory is 'src'):
+</p>
+python myth.py
+</p>
+Please wait. It will take a while (for this test it may take ~ 2 min).
+After all steps, when you will see a Thank you message, you may look into 
+your MYTH/test/myth-pluto-neqg/, which must contain the following files:
+</p>
+checkinput0004.png: z=0 slice of input data file
+</p>
+unigriddata0004.txt: Interpolated data with user's specified resolution.
+</p>
+checkdump0004.png: z=0 slice of interpolated data file 
+</p>
+volren0004-transferfunction.png: Density transfer function. Note: label may not be correct.
+</p>
+volren0004.0001.png: Final output
+</p>
+Output will look as 
+  </intro>
+
+  <h3><a name="testproblem_advection"></a><font color="#e74c3c"> </font></h3>
+  </p>
+  <intro> 
+   <div class="slideshow-container" style="float: right; padding:1em; max-width:100%;max-height:100%;">
+    <img src="images/mythpresentation.001.jpeg" style="float:left; padding:1.em; max-width:100%;max-height:100%;" class="wrap align-center"> 
+   </div>
+    </br> 
+   </p> 
+  </intro>
+
+  
+
+
+  </div>
+  <!--=============================================== -->
+  <!--================ TestProblems ===================== -->
+  <div id="Download" class="tabcontent" style="margin:2%;">
+   You may download it from <a href="https://github.com/gupta-siddhartha/MYTH">https://github.com/gupta-siddhartha/MYTH</a>
+   </p>
+   or 
+   </p>by using the following command in your terminal (recommended):
+   </p>
+   git clone git@github.com:gupta-siddhartha/MYTH.git
+   </br>
+  </div>
+  </br>
+</div> 
+
+  <!--=============================================== -->
+  <!--================ DEVELOPER ===================== -->
+  <div id="Developer" class="tabcontent" style="margin:2%;">
+<intro>
+  Author of the MYTH code, Siddhartha Gupta, is a Postdoctoral Scholar working with Prof. Damiano Caprioli in the Department of Astronomy and Astrophysics at the University of Chicago. Click <a href="../index.html">here</a> to see his personal webpage. SG acknowledges the efforts of the yt community for providing such a wonderful visualization tool.
+</p>
+ This code is written during a lockdown imposed almost everywhere in the World due the COVID19 pandemic. It is dedicated to all Doctors, Nurses, and all other people who are helping to fight against the COVID19 for a better tomorrow. 
+  </div>
+</intro>
+  </br>
+</div> 
+
+
+<button onclick="topFunction()" id="scrollup" title="Go to top">TOP</button>
+</article>
+
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("scrollup").style.display = "block";
+    } else {
+        document.getElementById("scrollup").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+</script>
+
+<script>
+function openTab(evt, cityName) {
+    var i, tabcontent, tablinks, btnlinks;
+    
+    /*btnlinks = document.getElementsByClassName("dropbtn");
+    btnlinks[0].style.display = "none";*/
+    
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("dropbtn");
+    
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+        
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";   
+}
+document.getElementById("defaultOpen").click();
+</script>
+
+
+<script>
+var myIndex = 0;
+carousel();
+function carousel() {
+    var i;
+    var x = document.getElementsByClassName("mySlides");
+    for (i = 0; i < x.length; i++) {
+       x[i].style.display = "none";  
+    }
+    myIndex++;
+    if (myIndex > x.length) {myIndex = 1}    
+    x[myIndex-1].style.display = "block";  
+    setTimeout(carousel, 3500); // Change image every 2 seconds
+}
+</script>
+
+<script>
+var slideIndex_solvers = 0;
+showSlides_solvers();
+
+function showSlides_solvers() {
+    var i;
+    var slides = document.getElementsByClassName("solvers_slides");
+    /*var dots = document.getElementsByClassName("dot");*/
+    for (i = 0; i < slides.length; i++) {
+       slides[i].style.display = "none";  
+    }
+    slideIndex_solvers++;
+    if (slideIndex_solvers> slides.length) {slideIndex_solvers = 1}    
+    /*for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }*/
+    slides[slideIndex_solvers-1].style.display = "block";  
+    /*dots[slideIndex_solvers-1].className += " active";*/
+    setTimeout(showSlides_solvers, 2000); // Change image every 2 seconds
+}
+</script>
+
+<script>
+    var slideIndex = 1;
+    showSlides(slideIndex);
+    function plusSlides(n) {
+      showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+    var i;
+    var slides = document.getElementsByClassName("myGallery");
+    var dots = document.getElementsByClassName("dot");
+    if (n > slides.length) {slideIndex = 1}    
+    if (n < 1) {slideIndex = slides.length}
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+    }
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex-1].style.display = "block";  
+    dots[slideIndex-1].className += " active";
+    
+    }
+</script>
+
+
+
+  
+<footer>
+<div style="float:left; color:#e3e5e5">
+copyright@Siddhartha
+</div>
+
+Thank you for the visit!
+<script>
+expireDate = new Date
+  expireDate.setMonth(expireDate.getMonth()+6)
+  jcount = eval(cookieVal("jaafarCounter"))
+  jcount++
+  document.cookie = "jaafarCounter="+jcount+";expires=" + expireDate.toGMTString()
+
+  function cookieVal(cookieName) {
+  thisCookie = document.cookie.split("; ")
+  for (i=0; i<thisCookie.length; i++){
+    if (cookieName == thisCookie[i].split("=")[0]){
+     return thisCookie[i].split("=")[1]
+    }
+  }
+  return 0
+}
+
+function page_counter(){
+  for (i=0;i<(7-jcount.toString().length);i++)
+    document.write('<span class="counter">0</span>')
+    for (y=0;y<(jcount.toString().length);y++)
+      document.write('<span class="counter">'+jcount.toString().charAt(y)+'</span>')
+}
+</script>
+<div style="float:right; color:#e3e5e5">
+<!-- hitwebcounter Code START -->
+<a href="https://www.hitwebcounter.com" target="_blank">
+<img src="https://hitwebcounter.com/counter/counter.php?page=7544841&style=0008&nbdigits=9&type=page&initCount=0" title="Web Counter" Alt="counter free"   border="0" >
+</a>                                    
+<!-- <script>page_counter(jcount); </script> -->
+</div>
+</footer>
+
+</body> <!-- Main body starts -->
+
+</html> 
+
