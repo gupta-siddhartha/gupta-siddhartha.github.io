@@ -1,1 +1,421 @@
+<!DOCTYPE html>
+<html>
+<!-- ==== Define Heading ===== -->
+<head>
+    <title>Shakti</title>
+    <link rel="stylesheet" href="../sg_style.css">
+</head>
+<style>
+body{
+    margin: 0;
+    background-color: black;
+    /*background-image: url("images/OW1Sew.jpg");
+    background-size: auto, auto, cover;
+    padding: 0;*/
+}
+img {
+    width: 100%;
+    height: auto;
+}
+.row:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+[class*="col-"] {
+    float: left;
+    padding: 15px;
+    width: 100%;
+}
+@media only screen and (min-width: 600px) {
+    .col-s-1 {width: 8.33%;}
+    .col-s-2 {width: 16.66%;}
+    .col-s-3 {width: 25%;}
+    .col-s-4 {width: 33.33%;}
+    .col-s-5 {width: 41.66%;}
+    .col-s-6 {width: 50%;}
+    .col-s-7 {width: 58.33%;}
+    .col-s-8 {width: 66.66%;}
+    .col-s-9 {width: 75%;}
+    .col-s-10 {width: 83.33%;}
+    .col-s-11 {width: 91.66%;}
+    .col-s-12 {width: 50%;}
+}
+@media only screen and (min-width: 768px) {
+    .col-1 {width: 8.33%;}
+    .col-2 {width: 16.66%;}
+    .col-3 {width: 19%;}
+    .col-4 {width: 55%;}
+    .col-5 {width: 41.66%;}
+    .col-6 {width: 35%;}
+    .col-7 {width: 58.33%;}
+    .col-8 {width: 66.66%;}
+    .col-9 {width: 75%;}
+    .col-10 {width: 83.33%;}
+    .col-11 {width: 91.66%;}
+    .col-12 {width: 100%;}
+}
+html {
+    font-family: "Lucida Sans", sans-serif;
+}
+.header {
+    background-color: #9933cc;
+    color: #ffffff;
+    padding: 15px;
+}
+.menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.menu li {
+    padding: 8px;
+    margin-bottom: 7px;
+    background-color :#33b5e5;
+    color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.menu li:hover {
+    background-color: #0099cc;
+}
+.aside {
+    background-color: #33b5e5;
+    padding: 15px;
+    color: #ffffff;
+    text-align: center;
+    font-size: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.footer {
+    background-color: #0099cc;
+    color: #ffffff;
+    text-align: center;
+    font-size: 12px;
+    padding: 15px;
+}
+</style>
+
+<!-- ==== Define style ===== -->
+
+<!-- ==== Main body starts ===== -->
+<body oncontextmenu="return false">
+<article>
+<h1 style="text-align: center">~ : SHAKTI : ~ </h1> 
+<h1 style="text-align: center; font-size: 24pt" >A Particle-In-Cell Code to Study Astrophysical Plasma </h1>
+
+<div class="container">
+  <a href="#Introduction" class="dropbtn" onclick="openTab(event, 'Introduction')" id="defaultOpen">Introduction</a>
+  <a href="#solvers" class="dropbtn" onclick="openTab(event, 'Solvers')">Solvers</a>
+  <div href="#testproblems" class="dropdown" >
+    <button href="#testproblems" class="dropbtn" onclick="openTab(event, 'TestProblems')" >TestProblems</button>
+    <div class="dropdown-content">
+      <a href="#testproblem_advection" class="dropbtn" onclick="openTab(event, 'TestProblems')" >Electrostatic</a>
+      <a href="#testproblem_hd" class="dropbtn" onclick="openTab(event, 'TestProblems')" >Electromagnetic</a>
+    </div>
+  </div>
+  <a href="#codes"     class="dropbtn" onclick="openTab(event, 'Download')">Download</a>
+  <a href="#developer" class="dropbtn" onclick="openTab(event, 'Developer')">Developer</a>
+  <!-- <a href="../index.html" class="dropbtn" style="float:right" onclick="openTab(event, 'Download')">Siddhartha's homepage</a> -->
+</div>
+
+<div class="tabmenu">
+  <!--================ Introduction ========================== -->
+  <div id="Introduction" class=tabcontent style="margin:2%;">
+  <div class="slideshow-container" style="float:left; padding:1em; max-width:39%;max-height:35%;" class="wrap align-left">
+    <img src="images/cover.png" style="float:left; padding:0.1em; max-width:90%;max-height:100%;" class="wrap align-left">
+    <div class="text" style="float: right; padding:0.1em; font-size:12.5px" > 
+   The production of out-of-plane magnetic field due to counter-streaming electron-positron pair plasma. The result is obtained from the Shakti code.
+   Grid distribution is 200x200, with two particles per cell per species and a second-order shape function for particles.
+</div> 
+ </div>
+    </br>   
+    <!-- <h3><a name="#Introduction"></a><font color="#e74c3c">Introduction</font></h3> -->
+    <intro style="line-height:25px; font-size: 12pt">
+'Shakti' is a multidimensional electromagetic code that utilizes Particle-In-Cell method to study plasma. 'Shakti' -- a Sanskrit word that means strength or power -- symbolizes high-energy astrophysical phenomena. Its applications presently focus on a collisionless regime where charged particles interact collectively through the electromagnetic field instead of Coulomb interactions. Though the Coulomb interactions can be implemented.
+</p>
+The current version of the Shakti code supports one and two dimensions in Cartesian geometry. The code is developed in a highly modular form, allowing user-friendly problem setup files. It supports multi-species, Maxwell-Boltzmann/Monoenergetic/power-law distribution, and higher-order shape functions. The code can be run on both single or multi processor(s) using commonly used compilers such as GCC or MPI. To explore sample test problems, click on "TestProblems".
+</p>
+This code is currently in the development stage, with the aim of being released publicly soon.
+</intro> 
+
+
+</br>
+</p>
+<!--Shakti was mainly developed for this work -
+ddGupta et al. (2018) MNRAS, 473, 1537; <a href="http://adsabs.harvard.edu/abs/2017arXiv170510448G">[NASA/ADS]</a>; <a href="https://doi.org/10.1093/mnras/stx2427"></a>; <a href="a">arXiv</a> -->
+</br>
+
+
+   
+   
+<!--<div class="row">
+
+<div class="col-4 col-s-3 menu">
+  <intro style="line-height:25px; font-size: 12pt"> 
+  <h3><a name="#Introduction"></a><font color="#e74c3c">Introduction</font></h3>
+   Shobdo is a two-fluid hydrodynamical code written by Siddhartha Gupta. This code uses finite volume eulerian grid. It has various modules e.g. thermal conduction, radiative cooling, heating, Cosmic ray diffusion. The current version of Shobdo supports one dimension and Cartesian/Spherical geometry. The user's manual of this code will be made available soon. To see some of the test problems, click on the tab "TestProblems".
+   </intro> 
+</div>
+
+<div class="col-6 col-s-9">
+  <img src="images/wave.png" style="padding:1em;" width="250" height="345">
+  <div class="text" style="padding:0.1em; font-size:12.5px" > The wave diagram. Vertical and horizontal axis displays time and distance. The coloured palette denotes density. Figure highlights the
+five distinct states of Riemann's problem. This simulation has been done using SHOBDO.
+</div> 
+</div>
+
+<div class="col-3 col-s-12">
+  <div class="aside">
+    <h2>What?</h2>
+    <p>Chania is a city on the island of Crete.</p>
+  </div>
+</div>
+
+</div> -->
+
+  </div>
+  <!--=============================================== -->
+
+  <!--================ TestProblems ===================== -->
+  <div id="TestProblems" class="tabcontent" style="margin:2%;">
+
+  <!--
+  <h3><a name="testproblem_advection"></a><font color="#e74c3c">A. Advection</font></h3>
+  <intro> 
+    A.1. A one dimensional profile that contains a gaussian function and a step function, which are forced to 
+   advect with constant speed. The advection speed is set to 1 and boundaries are periodic. Profiles at various time shown below.
+    </intro> 
+   <div class="slideshow-container" style="float: right; padding:1em; max-width:100%;max-height:50%;">
+    <img src="images/advec.png" style="float:left; padding:1.em; max-width:70%;max-height:100%;" class="wrap align-left"> 
+   </div>
+    </br>   
+   
+  </br>
+  </br>
+  -->
+
+  <h3><a name="testproblem_hd"></a><font color="#e74c3c">A. Charge conservation</font></h3>
+   <intro>
+  <div class="slideshow-container" style="float: right; padding:1em; max-width:100%;max-height:50%;">
+     <video width=50% controls loop>
+      <source src="video/charge.mp4"  type="video/mp4">
+    </video>    
+  </div>
+   </br>
+  </intro>
+
+
+  <h3><a name="testproblem_hd"></a><font color="#e74c3c">A. Plasma Oscillation</font></h3>
+   <intro>
+  Oscillation of electrons in electron-proton plasma 
+  <div class="slideshow-container" style="float: right; padding:1em; max-width:100%;max-height:50%;">
+     <video width=50% controls loop>
+      <source src="video/plasmaoc.mp4"  type="video/mp4">
+    </video>     
+  </div>
+   </br> 
+  </intro>
+
+  <h3><a name="testproblem_hd"></a><font color="#e74c3c">B Weibel Instability</font></h3>
+   <intro>
+  Counter streaming electron-positron flow
+  <div class="slideshow-container" style="float: right; padding:1em; max-width:100%;max-height:50%;">
+     <video width=50% controls loop>
+      <source src="video/weibel.mp4"  type="video/mp4">
+    </video>     
+  </div>
+   </br>
+  </intro>
+
+  <h3><a name="testproblem_hd"></a><font color="#e74c3c">C. Nonresonant streaming instability</font></h3>
+  <intro>
+  Super-Alfvenic drift of relativistic particles in electron-proton plasmas
+  <div class="slideshow-container" style="float: right; padding:1em; max-width:100%;max-height:50%;">
+     <video width=50% controls loop>
+      <source src="video/nrsi.mp4"  type="video/mp4">
+    </video>
+  </div>
+   </br>
+  </intro>
+
+  </div>
+  <!--=============================================== -->
+  <!--================ TestProblems ===================== -->
+  <div id="Download" class="tabcontent" style="margin:2%;">
+   This link is under construction.
+  </div>
+  </br>
+</div> 
+
+  <!--=============================================== -->
+  <!--================ DEVELOPER ===================== -->
+  <div id="Developer" class="tabcontent" style="margin:2%;">
+  This code is written by Siddhartha Gupta, a Postdoctoral Research Associate in the dept of Astrophysical Sciences at Princeton University.
+  Click <a href="../index.html">here</a> to see his personal page. 
+  <h3><font color="#e74c3c">Acknowledgement</font></h3>
+    <intro style="line-height:25px; font-size: 12pt">
+    SG acknowledges all members of the plasma group at the University of Chicago and Princeton University whose discussions in various forms inspired the creation of this code. 
+    </intro>
+  </div>
+  </br>
+</div> 
+
+
+<button onclick="topFunction()" id="scrollup" title="Go to top">TOP</button>
+</article>
+
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("scrollup").style.display = "block";
+    } else {
+        document.getElementById("scrollup").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+</script>
+
+<script>
+function openTab(evt, cityName) {
+    var i, tabcontent, tablinks, btnlinks;
+    
+    /*btnlinks = document.getElementsByClassName("dropbtn");
+    btnlinks[0].style.display = "none";*/
+    
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("dropbtn");
+    
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+        
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";   
+}
+document.getElementById("defaultOpen").click();
+</script>
+
+
+<script>
+var myIndex = 0;
+carousel();
+function carousel() {
+    var i;
+    var x = document.getElementsByClassName("mySlides");
+    for (i = 0; i < x.length; i++) {
+       x[i].style.display = "none";  
+    }
+    myIndex++;
+    if (myIndex > x.length) {myIndex = 1}    
+    x[myIndex-1].style.display = "block";  
+    setTimeout(carousel, 3500); // Change image every 2 seconds
+}
+</script>
+
+<script>
+var slideIndex_solvers = 0;
+showSlides_solvers();
+
+function showSlides_solvers() {
+    var i;
+    var slides = document.getElementsByClassName("solvers_slides");
+    /*var dots = document.getElementsByClassName("dot");*/
+    for (i = 0; i < slides.length; i++) {
+       slides[i].style.display = "none";  
+    }
+    slideIndex_solvers++;
+    if (slideIndex_solvers> slides.length) {slideIndex_solvers = 1}    
+    /*for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }*/
+    slides[slideIndex_solvers-1].style.display = "block";  
+    /*dots[slideIndex_solvers-1].className += " active";*/
+    setTimeout(showSlides_solvers, 2000); // Change image every 2 seconds
+}
+</script>
+
+<script>
+    var slideIndex = 1;
+    showSlides(slideIndex);
+    function plusSlides(n) {
+      showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+    var i;
+    var slides = document.getElementsByClassName("myGallery");
+    var dots = document.getElementsByClassName("dot");
+    if (n > slides.length) {slideIndex = 1}    
+    if (n < 1) {slideIndex = slides.length}
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+    }
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex-1].style.display = "block";  
+    dots[slideIndex-1].className += " active";
+    
+    }
+</script>
+
+
+
+  
+<footer>
+<div style="float:left; color:#e3e5e5">
+copyright@Siddhartha
+</div>
+Thank you for the visit!
+<script>
+expireDate = new Date
+  expireDate.setMonth(expireDate.getMonth()+6)
+  jcount = eval(cookieVal("jaafarCounter"))
+  jcount++
+  document.cookie = "jaafarCounter="+jcount+";expires=" + expireDate.toGMTString()
+
+  function cookieVal(cookieName) {
+  thisCookie = document.cookie.split("; ")
+  for (i=0; i<thisCookie.length; i++){
+    if (cookieName == thisCookie[i].split("=")[0]){
+     return thisCookie[i].split("=")[1]
+    }
+  }
+  return 0
+}
+
+function page_counter(){
+  for (i=0;i<(7-jcount.toString().length);i++)
+    document.write('<span class="counter">0</span>')
+    for (y=0;y<(jcount.toString().length);y++)
+      document.write('<span class="counter">'+jcount.toString().charAt(y)+'</span>')
+}
+</script>
+<div style="float:right; color:#e3e5e5">
+<!--<script>page_counter(jcount); </script> -->
+<!-- hitwebcounter Code START -->
+<a href="https://www.hitwebcounter.com" target="_blank">
+<img src="https://hitwebcounter.com/counter/counter.php?page=7544843&style=0008&nbdigits=9&type=page&initCount=0" title="Web Counter" Alt="counter free"   border="0" >
+</a>                                    
+</div>
+</footer>
+
+</body> <!-- Main body starts -->
+
+</html> 
 

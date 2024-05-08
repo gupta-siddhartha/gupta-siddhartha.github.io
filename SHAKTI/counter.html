@@ -1,0 +1,24 @@
+<html>
+<head><title>My Site</title>
+
+
+
+</head>
+<body>
+This is my site.
+<br><br><br>
+ <script>
+ if (sessionStorage.clickcount)
+  {
+  sessionStorage.clickcount=Number(sessionStorage.clickcount)+1;
+  }
+else
+  {
+  sessionStorage.clickcount=1;
+  }
+document.write("You have clicked the button " + 
+        sessionStorage.clickcount + " time(s) in this session.");
+ </script> 
+
+</body>
+</html>
