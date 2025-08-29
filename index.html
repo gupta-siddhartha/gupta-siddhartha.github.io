@@ -26,13 +26,14 @@
     <button href="#research" class="dropbtn" onclick="openTab(event, 'Research')" >Research</button>
     <div class="dropdown-content">
       <a href="#research_interests" class="dropbtn" onclick="openTab(event, 'Research')" >Interests</a>
-      <a href="#research_collaborators" class="dropbtn" onclick="openTab(event, 'Research')" >Collaborators</a>
-      <a href="#research_summary" class="dropbtn" onclick="openTab(event, 'Research')" >Summary</a>
-      <a href="#research_presentation" class="dropbtn" onclick="openTab(event, 'Research')" >Talks/Posters</a>
+      <!-- <a href="#research_collaborators" class="dropbtn" onclick="openTab(event, 'Research')" >Collaborators</a>-->
+      <a href="#research_summary" class="dropbtn" onclick="openTab(event, 'Research')">Projects</a>
+      <a href="#research_onlinetalks" class="dropbtn" onclick="openTab(event, 'Research')" >Talks</a>
+      <a href="#research_presentation" class="dropbtn" onclick="openTab(event, 'Research')" >Posters</a>
       <a href="#research_publications" class="dropbtn" onclick="openTab(event, 'Research')"  >Publications</a>
     </div>
   </div>
-  <a href="#movies" class="dropbtn" onclick="openTab(event, 'Movies')" >Movies</a>
+  <a href="#simulation" class="dropbtn" onclick="openTab(event, 'Simulation')" >Simulation</a>
   <a href="#codes" class="dropbtn" onclick="openTab(event, 'Code')">Codes</a>
   <a href="#gallery" class="dropbtn" onclick="openTab(event, 'Gallery')" >Gallery</a>
   <!-- <a href="#aboutme" class="dropbtn" onclick="openTab(event, 'About me')">About me</a> -->
@@ -266,17 +267,20 @@ I began my academic journey at National School, followed by primary education (c
   <div id="Research" class="tabcontent" style="margin:2%;">
    
    <h3> <a name="research_interests"></a><font color="#e74c3c">Interests</font></h3>
-   <intro> 
+   <intro>
+   I have broad research interests, though my work so far has primarily focused on
    <ul>
     <li>Kinetic Plasmas</li>
     <li>Cosmic rays </li>
+    <li>Galaxy evolution</li>
     <li>Numerical methods</li>
     <li>Gravity</li>
   </ul>  
 
+  <!---
   <h3> <a name="research_collaborators"></a><font color="#e74c3c">Collaborators</font> </h3>
   <a href="https://astro.uchicago.edu/~caprioli/" >Damiano Caprioli (Postdoc advisor)</a>, University of Chicago, IL, USA.</br> 
-  <!-- <a href="">David Eichler</a>, Ben-Gurion University, Israel.</br> -->
+  <a href="">David Eichler</a>, Ben-Gurion University, Israel.</br> 
   <a href="https://colbyhaggerty.com/" >Colby Haggerty</a>, University of Hawaii, USA</br>
   <a href="http://personalpages.to.infn.it/~mignone/">Andrea Mignone</a>, University of Torino, Italy.</br>
   <a href="http://www.rri.res.in/~biman/"> Biman Nath (PhD advisor)</a>, Raman Research Insitute Bangalore, India.</br>
@@ -284,14 +288,14 @@ I began my academic journey at National School, followed by primary education (c
   <a href="">Yuri Shchekinov</a>, Lebedev Physical Institute Moscow, Russia.</br>
   <a href="https://www.astro.princeton.edu/~anatoly/">Anatoly Spitkovsky (Postdoc advisor)</a>, Princeton University, NJ, USA.</br>
   <p> 
+   -->
 
-
- <h3> <a name="research_summary"></a><font color="#e74c3c">Research summary</font> </h3>
-  To know our contributions, click on the tabs below.
+ <h3> <a name="research_summary"></a><font color="#e74c3c">Research Projects</font> </h3>
+  To know my contributions, click on the tabs below.
 
  </intro> 
  
-    <button class="accordion" style="position:relative"> Electron acceleration at non-relativistic collisionless shocks </button>
+    <button class="accordion" style="position:relative"> 1. Particle Acceleration in Collisionless Shocks </button>
 <div class="panel">
   <p> 
   Energetic charged particles, commonly referred to as cosmic rays, are one of the main contributors to the nonthermal energies in the universe. Although diffusive shock acceleration (DSA) is the promising mechanism for particle acceleration at shocks, the processes that promote electrons to DSA remain unclear. To solve this problem, we have performed first-principles kinetic particle-in-cell simulations of collisionless shocks, exploring a wide range of shock speeds, Alfvénic, and sonic Mach numbers. I will report under which conditions electrons participate in the DSA at quasi-parallel shocks. The results are key to understanding the nonthermal phenomenology of a variety of heliophysical/astrophysical sources that shine in radio, X-rays, and gamma-rays.
@@ -306,7 +310,7 @@ Ref.</br>
 
 
  
-   <button class="accordion" style="position:relative"> Magnetic field amplification due to cosmic ray driven kinetic plasma instability </button>
+   <button class="accordion" style="position:relative"> 2. Magnetic Field Amplification From Plasma Instabilities </button>
 <div class="panel">
   <p> 
   A strong super-Alfvénic drift of energetic particles (or cosmic rays) in a magnetized plasma can amplify the magnetic field significantly through nonresonant streaming instability (NRSI). While the traditional analysis is done for an ion current, here we use kinetic particle-in-cell simulations to study how the NRSI behaves when it is driven by electrons or by a mixture of electrons and positrons. In particular, we characterize the growth rate, spectrum, and helicity of the unstable modes, as well the level of the magnetic field at saturation. Our results are potentially relevant for several space/astrophysical environments (e.g., electron strahl in the solar wind, at oblique nonrelativistic shocks, around pulsar wind nebulae), and also in laboratory experiments. 
@@ -318,7 +322,7 @@ Ref.</br>
 </div>
 
  
-  <button class="accordion" style="position:relative"> Closure problem in cosmic ray two-fluid equations</button>
+  <button class="accordion" style="position:relative"> 3. Two-fluid (Cosmic Ray + Thermal Gas) Magnetohydrodynamic Model </button>
 <div class="panel">
   <p> 
  Cosmic rays (CRs) are frequently modelled as an additional fluid in hydrodynamic (HD) and magnetohydrodynamic (MHD) simulations of astrophysical flows. The standard CR two-fluid model is described in terms of three conservation laws (expressing conservation of mass, momentum, and total energy) and one additional equation (for the CR pressure) that cannot be cast in a satisfactory conservative form. The presence of non-conservative terms with spatial derivatives in the model equations prevents a unique weak solution behind a shock. We investigate a number of methods for the numerical solution of the two-fluid equations and find that, in the presence of shock waves, the results generally depend on the numerical details (spatial reconstruction, time stepping, the CFL number, and the adopted discretization). All methods converge to a unique result if the energy partition between the thermal and non-thermal fluids at the shock is prescribed using a subgrid prescription. This highlights the non-uniqueness problem of the two-fluid equations at shocks. From our numerical investigations, we report a robust method for which the solutions are insensitive to the numerical details even in absence of a subgrid prescription, although we recommend a subgrid closure at shocks using results from kinetic theory. The subgrid closure is crucial for a reliable post-shock solution and also its impact on large-scale flows because the shock microphysics that determines CR acceleration is not accurately captured in a fluid approximation. Critical test problems, limitations of fluid modelling, and future directions are discussed. 
@@ -328,7 +332,7 @@ Ref.</br>
 </div>
 
  
-<button class="accordion" style="position:relative"> Solution to Neon isotope problem in Galactic cosmic rays</button>
+<button class="accordion" style="position:relative"> 4. Composition of Galactic Cosmic Rays: Isotope and Other Puzzle</button>
 <div class="panel">
   <p>
 Cosmic ray (CR) sources leave signatures in the isotopic abundances of CRs. Current models of Galactic CRs that consider supernovae (SNe) shocks as the main sites of particle acceleration cannot satisfactorily explain the higher 22Ne/20Ne ratio in CRs compared to the interstellar medium. Although stellar winds from massive stars have been invoked, their contribution relative to SNe ejecta has been taken as a free parameter. Here, we present a theoretical calculation of the relative contributions of wind termination shocks (WTSs) and SNe shocks in superbubbles, based on the hydrodynamics of winds in clusters, the standard stellar mass function, and stellar evolution theory. We find that the contribution of WTSs towards the total CR production is at least 25 percent, which rises to ≳ 50 per cent for young (≲10 Myr) clusters, and explains the observed 22Ne/20Ne ratio. We argue that since the progenitors of apparently isolated supernovae remnants (SNRs) are born in massive star clusters, both WTS and SNe shocks can be integrated into a combined scenario of CRs being accelerated in massive clusters. This scenario is consistent with the observed ratio of SNRs to γ-ray bright (Lγ ≳ 1e35 erg/s) star clusters, as predicted by star cluster mass function. Moreover, WTSs can accelerate CRs to PeV energies, and solve other long-standing problems of the standard SN paradigm of CR acceleration.
@@ -339,7 +343,7 @@ Ref.</br>
 </div>
 
 
- <button class="accordion">Impact of cosmic rays in young star clusters</button>
+ <button class="accordion">5. Young Star Clusters as Building Blocks of a Galaxy </button>
   <div class="panel">
   <p>
   
@@ -371,7 +375,7 @@ thermal and non-thermal radio, and X-rays in constraining the high energy activi
  
 
 
- <button class="accordion">Radiation from young star clusters</button>
+ <button class="accordion">6. Radiation from Young Star Clusters</button>
   <div class="panel">
   <div class="slideshow-container" style="float: left; padding:1em; max-width:60%;max-height:60%;">
      <video width=100% controls loop; style="float: left; width:95%;">
@@ -391,7 +395,7 @@ We have studied this problem by considering the time evolution of a star cluster
  </div>
  
 
- <button class="accordion" style="position:relative"> A Modified Newtonian gravity</button>
+ <button class="accordion" style="position:relative">7. A Modified Newtonian Gravity</button>
 <div class="panel">
   <p> My MSc thesis was focused on the applications of a modified Newtonian gravity in various astrophysical objects. This study involved a phenomenological approach which combines strong field and weak field gravities. With my advisor, Prof. Sayan Kar at IIT Kgp, we investigated the non-singular collapse of gas cloud and galaxy rotation curve.
 </br>
@@ -401,8 +405,35 @@ Ref.</br>
 
  
  </p>
-  
-  <h3> <a name="research_presentation"></a><font color="#e74c3c">Selected posters</font> </h3>
+ 
+  <h3> <a name="research_onlinetalks"></a><font color="#e74c3c">Talks</font> </h3>
+
+  <!-- Simulation  1 -->
+   <h3> <a name=""></a><font color="#e74c3c">"Return Currents in Shocks", presented at AAS Journal Author Series</font></h3>
+   <intro>
+   <ul>
+      <iframe width=50% controls 
+      src="https://youtu.be/OEdYnshvKPQ">
+      </iframe>
+      <!-- <div class="text" style="position: lower-left; padding:0.5em; width:50%; font-size:12.5px" > A</div> -->
+   </ul>
+   </intro>
+   <!--  simulation end -->
+
+   <!-- Simulation  2 -->
+   <h3> <a name=""></a><font color="#e74c3c">Streaming Instability, presented at APS DPP Meeting 2021</font></h3>
+   <intro>
+   <ul>
+      <video width=50% controls>
+      <source src="video/APS_DPP2021.mp4"  type="video/mp4">
+      </video>
+      <!-- <div class="text" style="position: lower-left; padding:0.5em; width:50%; font-size:12.5px" > [Top] CR Proton driven Bell Instability; [Bottom] CR Electron driven Bell Instability</div> -->
+   </ul>
+   </intro>
+   <!--  simulation end --> 
+
+ 
+  <h3> <a name="research_presentation"></a><font color="#e74c3c">Posters</font> </h3>
   1. 9-13th May 2016 at the annual Meeting of Astronomical Society of India at Srinagar, India. <a href="docs/sgupta_ASI2016.pdf">[PDF]</a></br>
   2. January 2018 in the Plasma Workshop at the Indian Institute of Science, Bangalore, India. <a href="docs/sgupta_IIsc2018.pdf">[PDF]</a></br>
   3. 26 july - 3rd August 2023 at 38th International Cosmic Ray Conference, Nagoya, Japan. <a href="docs/sgupta_ICRC2023.pdf">[PDF]</a></br> 
@@ -434,8 +465,8 @@ Ref.</br>
 </div>
   <!--=============================================== -->
 
-<!--================== Movies ================== -->
- <div id="Movies" class="tabcontent" style="margin:2%;" >
+<!--================== Simulation ================== -->
+ <div id="Simulation" class="tabcontent" style="margin:2%;" >
 
    <!-- Simulation  1 -->
    <h3> <a name=""></a><font color="#e74c3c">A 3D simulation of a compact star cluster</font></h3>
