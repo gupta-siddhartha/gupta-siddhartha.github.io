@@ -121,13 +121,31 @@ html {
 <div class="tabmenu">
   <!--================ Introduction ========================== -->
   <div id="Introduction" class=tabcontent style="margin:2%;">
+
+  <!--
   <div class="slideshow-container" style="float:left; padding:1em; max-width:39%;max-height:35%;" class="wrap align-left">
     <img src="images/cover.png" style="float:left; padding:0.1em; max-width:90%;max-height:100%;" class="wrap align-left">
     <div class="text" style="float: right; padding:0.1em; font-size:12.5px" > 
-   The production of out-of-plane magnetic field due to counter-streaming electron-positron pair plasma. The result is obtained from the Shakti code.
-   Grid distribution is 200x200, with two particles per cell per species and using a second-order shape function for each particle.
-</div> 
- </div>
+    The production of out-of-plane magnetic field due to counter-streaming electron-positron pair plasma. The result is obtained from the Shakti code.
+    Grid distribution is 200x200, with two particles per cell per species and using a second-order shape function for each particle.
+    </div> 
+  </div>
+  -->
+
+   <div class="slideshow-container" style="float:left; padding:1em; max-width:39%;max-height:35%;">
+     <video width=100% controls loop>
+      <source src="video/weibel_z.mp4"  type="video/mp4">
+    </video>
+    <div class="text" style="float: right; padding:0.1em; font-size:12.5px" > 
+    The production of magnetic field due to counter-streaming electron-positron pair plasma. The result is obtained from the Shakti code.
+    Grid distribution is 200x200, with two particles per cell per species and using a second-order shape function for each particle.
+    </div> 
+
+   </div>
+
+
+
+
     </br>   
     <!-- <h3><a name="#Introduction"></a><font color="#e74c3c">Introduction</font></h3> -->
     <intro style="line-height:25px; font-size: 12pt">
@@ -142,7 +160,7 @@ The PIC methods have diverse applications. However, despite decades of effort, m
 1) limited adaptability for user-defined modules, 2) inflexible simulation environment for setting up new problems, and 3) poor documentation.
 The Shakti code addresses these challenges by providing a modular, multidimensional, and user-friendly framework.
 </p>
-Originally begun as a self-tutorial project, Shakti has now evolved into a robust numerical tool.
+Shakti began as a self-tutorial project and has evolved into a robust numerical tool.
 The current version of the Shakti code supports one, two, and three dimensions in Cartesian geometry and is extensible to support different geometries. 
 </p>
 </b>
@@ -159,9 +177,7 @@ This code is currently in the development stage, to be released publicly soon.
 ddGupta et al. (2018) MNRAS, 473, 1537; <a href="http://adsabs.harvard.edu/abs/2017arXiv170510448G">[NASA/ADS]</a>; <a href="https://doi.org/10.1093/mnras/stx2427"></a>; <a href="a">arXiv</a> -->
 </br>
 
-
-   
-   
+ 
 
   </div>
   <!--=============================================== -->
@@ -169,27 +185,39 @@ ddGupta et al. (2018) MNRAS, 473, 1537; <a href="http://adsabs.harvard.edu/abs/2
   <!--================ TestProblems ===================== -->
   <div id="TestProblems" class="tabcontent" style="margin:2%;">
 
-  <h3><a name="testproblem_hd"></a><font color="#e74c3c">A. Charge conservation</font></h3>
-   <intro>
+  <h3><a name="testproblem_hd"></a><font color="#e74c3c">F. Nonresonant streaming instability</font></h3>
+  <intro>
+  Super-Alfvenic drift of relativistic particles in a nonrelativistic electron-proton plasma (this test includes three species)
   <div class="slideshow-container" style="float: right; padding:1em; max-width:100%;max-height:50%;">
-     <video width=50% controls loop>
-      <source src="video/charge.mp4"  type="video/mp4">
-    </video>    
+     <video width=80% controls loop>
+      <source src="video/nrsi.mp4"  type="video/mp4">
+    </video>
   </div>
    </br>
   </intro>
 
-
-  <h3><a name="testproblem_hd"></a><font color="#e74c3c">B. Plasma Oscillation</font></h3> 
+  <h3><a name="testproblem_hd"></a><font color="#e74c3c">E. Magnetic Reconnection</font></h3>
   <intro>
-  Oscillation of electrons in electron-proton plasma 
+  Magnetic reconnection in a highly magnetized electron-positron plasma
+  <div class="slideshow-container" style="float: right; padding:1em; max-width:100%;max-height:50%;">
+     <video width=80% controls loop>
+      <source src="video/reconnect.mp4"  type="video/mp4">
+    </video>
+  </div>
+   </br>
+  </intro>
+
+  <h3><a name="testproblem_hd"></a><font color="#e74c3c">D. Twostream instability</font></h3>
+  <intro>
+  Counterstreaming two beams made of electron-positron pair
   <div class="slideshow-container" style="float: right; padding:1em; max-width:100%;max-height:50%;">
      <video width=50% controls loop>
-      <source src="video/plasmaoc.mp4"  type="video/mp4">
-    </video>     
+      <source src="video/twostream.mp4"  type="video/mp4">
+    </video>
   </div>
-   </br> 
+   </br>
   </intro>
+
 
   <h3><a name="testproblem_hd"></a><font color="#e74c3c">C. Weibel Instability</font></h3>
    <intro>
@@ -211,31 +239,27 @@ ddGupta et al. (2018) MNRAS, 473, 1537; <a href="http://adsabs.harvard.edu/abs/2
    </br>
   </intro>
 
-
-  <h3><a name="testproblem_hd"></a><font color="#e74c3c">D. Twostream instability</font></h3>
+  <h3><a name="testproblem_hd"></a><font color="#e74c3c">B. Plasma Oscillation</font></h3>
   <intro>
-  Counterstreaming two beams made of electron-positron pair
+  Oscillation of electrons in electron-proton plasma
   <div class="slideshow-container" style="float: right; padding:1em; max-width:100%;max-height:50%;">
      <video width=50% controls loop>
-      <source src="video/twostream.mp4"  type="video/mp4">
+      <source src="video/plasmaoc.mp4"  type="video/mp4">
     </video>
   </div>
    </br>
   </intro>
 
 
-  <h3><a name="testproblem_hd"></a><font color="#e74c3c">E. Nonresonant streaming instability</font></h3>
-  <intro>
-  Super-Alfvenic drift of relativistic particles in electron-proton plasmas (three species problem)
+ <h3><a name="testproblem_hd"></a><font color="#e74c3c">A. Charge conservation</font></h3>
+   <intro>
   <div class="slideshow-container" style="float: right; padding:1em; max-width:100%;max-height:50%;">
      <video width=50% controls loop>
-      <source src="video/nrsi.mp4"  type="video/mp4">
+      <source src="video/charge.mp4"  type="video/mp4">
     </video>
   </div>
    </br>
   </intro>
-
-
 
 
   </div>
