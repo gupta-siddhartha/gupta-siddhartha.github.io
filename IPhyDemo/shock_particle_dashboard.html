@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motion of a charged particle at the shock</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050814;
+            --panel-bg: rgba(13, 20, 38, 0.75);
+            --panel-border: rgba(255, 255, 255, 0.08);
+
+            --color-b: #00e5ff;
+            --color-e: #ffea00;
+            --color-v: #ff007f;
+            --color-f: #ff1744;
+            --color-trail: #00e676;
+            --color-drift: #ffab00;
+            --color-shock: #d500f9;
+
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --font-sans: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        body.light-theme {
+            --bg-color: #f3f4f8;
+            --panel-bg: rgba(255, 255, 255, 0.85);
+            --panel-border: rgba(0, 0, 0, 0.1);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            height: 100vh; overflow: hidden;
+            display: flex; flex-direction: column;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        header {
+            padding: 0.6rem 1.5rem;
+            border-bottom: 1px solid var(--panel-border);
+            background: rgba(8, 12, 28, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 10;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        body.light-theme header { background: rgba(240, 242, 248, 0.85); }
+        header h1 {
+            font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text-primary) 40%, var(--color-b) 100%);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        header p { color: var(--text-secondary); font-size: 0.82rem; margin-top: 0.15rem; }
+        main { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 360px; overflow: hidden; }
+        .sidebar {
+            order: 2;
+            background-color: rgba(6, 10, 22, 0.6);
+            border-left: 1px solid var(--panel-border);
+            padding: 1rem; display: flex; flex-direction: column; gap: 0.7rem;
+            overflow-y: auto;
+        }
+        .workspace { order: 1; }
+        body.light-theme .sidebar { background-color: rgba(230, 233, 242, 0.4); }
+        .section-title {
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--text-secondary); margin-bottom: 0.1rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .section-title::after { content: ''; flex: 1; height: 1px; background-color: var(--panel-border); }
+        .control-group {
+            background-color: var(--panel-bg); border: 1px solid var(--panel-border);
+            border-radius: 12px; padding: 0.7rem;
+            display: flex; flex-direction: column; gap: 0.65rem;
+            backdrop-filter: blur(8px);
+        }
+        .slider-container { display: flex; flex-direction: column; gap: 0.18rem; }
+        .slider-header { display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 500; }
+        .slider-label { color: var(--text-primary); }
+        .slider-val { font-family: var(--font-mono); color: var(--color-b); font-weight: 600; }
+        input[type="range"] {
+            -webkit-appearance: none; appearance: none; width: 100%; height: 5px; border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1); outline: none;
+        }
+        body.light-theme input[type="range"] { background: rgba(0, 0, 0, 0.15); }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%;
+            background: var(--color-b); cursor: pointer; box-shadow: 0 0 6px rgba(0, 229, 255, 0.5);
+            transition: transform 0.1s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+        input[type="number"].num-entry {
+            width: 64px; font-family: var(--font-mono); font-size: 0.75rem;
+            background: rgba(255, 255, 255, 0.05); color: var(--color-b);
+            border: 1px solid var(--panel-border); border-radius: 6px;
+            padding: 2px 5px; text-align: right;
+        }
+        body.light-theme input[type="number"].num-entry { background: rgba(0, 0, 0, 0.03); }
+        input[type="number"].num-entry:focus { outline: none; border-color: var(--color-b); }
+        .slider-header-row { display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; }
+        .derived-row { display: flex; justify-content: space-between; font-size: 0.75rem; padding: 0.1rem 0; }
+        .derived-label { color: var(--text-secondary); }
+        .derived-val { font-family: var(--font-mono); color: var(--color-drift); font-weight: 600; }
+        .checkbox-container { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 0.82rem; user-select: none; }
+        .checkbox-container input { display: none; }
+        .checkmark {
+            width: 15px; height: 15px; border: 1px solid var(--panel-border); border-radius: 4px;
+            background-color: rgba(8, 12, 22, 0.85); display: inline-block; position: relative; transition: all 0.2s;
+        }
+        body.light-theme .checkmark { background-color: #fff; border-color: rgba(0, 0, 0, 0.2); }
+        .checkbox-container:hover .checkmark { border-color: var(--color-b); }
+        .checkbox-container input:checked+.checkmark { background-color: var(--color-b); border-color: var(--color-b); }
+        .checkbox-container.vec-b input:checked+.checkmark { background-color: var(--color-b); border-color: var(--color-b); }
+        .checkbox-container.vec-e input:checked+.checkmark { background-color: var(--color-e); border-color: var(--color-e); }
+        .checkbox-container.vec-v input:checked+.checkmark { background-color: var(--color-v); border-color: var(--color-v); }
+        .checkbox-container.vec-f input:checked+.checkmark { background-color: var(--color-f); border-color: var(--color-f); }
+        .checkbox-container.vec-trail input:checked+.checkmark { background-color: var(--color-trail); border-color: var(--color-trail); }
+        .checkbox-container.vec-drift input:checked+.checkmark { background-color: var(--color-drift); border-color: var(--color-drift); }
+        .checkbox-container.vec-shock input:checked+.checkmark { background-color: var(--color-shock); border-color: var(--color-shock); }
+        .checkbox-container input:checked+.checkmark::after {
+            content: ''; position: absolute; left: 4px; top: 1px; width: 3px; height: 7px;
+            border: solid #000; border-width: 0 2px 2px 0; transform: rotate(45deg);
+        }
+        body.light-theme .checkbox-container input:checked+.checkmark::after { border-color: #fff; }
+        .btn {
+            background-color: rgba(255, 255, 255, 0.04); border: 1px solid var(--panel-border);
+            color: var(--text-primary); padding: 0.45rem 0.8rem; border-radius: 8px;
+            font-family: var(--font-sans); font-weight: 500; font-size: 0.76rem; cursor: pointer;
+            transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+        }
+        body.light-theme .btn { background-color: rgba(0, 0, 0, 0.04); }
+        .btn:hover { background-color: var(--color-b); color: #000; border-color: var(--color-b); box-shadow: 0 0 10px rgba(0, 229, 255, 0.3); }
+        body.light-theme .btn:hover { color: #fff; }
+        .btn-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+        .btn-row .btn { flex: 1; min-width: 84px; }
+        .workspace { display: grid; grid-template-rows: 1fr 130px; height: 100%; background-color: #020408; position: relative; }
+        body.light-theme .workspace { background-color: #eaecf2; }
+        #canvas-container { width: 100%; height: 100%; position: relative; }
+        .hud {
+            position: absolute; top: 20px; right: 20px;
+            background: rgba(8, 12, 28, 0.9); border: 1px solid var(--panel-border); border-radius: 12px;
+            padding: 0.9rem; pointer-events: none; font-family: var(--font-mono); font-size: 0.72rem;
+            display: flex; flex-direction: column; gap: 0.32rem; backdrop-filter: blur(8px); z-index: 5;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); width: 270px;
+        }
+        body.light-theme .hud { background: rgba(255, 255, 255, 0.95); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); }
+        body.light-theme .hud .hud-value { color: #000; }
+        .hud-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.04); padding-bottom: 0.18rem; }
+        body.light-theme .hud-row { border-bottom-color: rgba(0, 0, 0, 0.06); }
+        .hud-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .hud-label { color: var(--text-secondary); }
+        .hud-value { color: #fff; font-weight: 500; }
+        .hud-value.highlight { color: var(--color-b); font-weight: bold; }
+        .hud-value.warn { color: var(--color-f); font-weight: bold; }
+        .hud-3col {
+            top: 20px; left: 50%; right: auto; transform: translateX(-50%);
+            width: auto; max-width: 92vw;
+            display: grid; grid-auto-flow: column; grid-template-rows: repeat(4, auto);
+            grid-template-columns: repeat(4, minmax(170px, 1fr));
+            gap: 0.2rem 1.5rem;
+        }
+        .hud-3col .hud-row { min-width: 0; }
+        .formula-bar {
+            background-color: rgba(6, 10, 22, 0.9); border-top: 1px solid var(--panel-border);
+            padding: 0.5rem 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+            font-size: 0.76rem; line-height: 1.35; overflow-y: auto;
+        }
+        body.light-theme .formula-bar { background-color: rgba(255, 255, 255, 0.9); }
+        .formula-column h3 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.2rem; color: var(--color-b); }
+        .formula-column p { color: var(--text-secondary); }
+        .legend {
+            position: absolute; bottom: 20px; left: 20px;
+            background: rgba(8, 12, 28, 0.9); border: 1px solid var(--panel-border); border-radius: 12px;
+            padding: 0.8rem; z-index: 5; display: flex; flex-direction: column; gap: 0.4rem;
+            font-size: 0.72rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        body.light-theme .legend { background: rgba(255, 255, 255, 0.95); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); color: #0f172a; }
+        body.light-theme .legend-item { color: #475569; }
+        .legend-item { display: flex; align-items: center; gap: 0.5rem; }
+        .legend-color { width: 10px; height: 10px; border-radius: 2px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>Motion of a charged particle at the shock</h1>
+            <p>B(x) tanh ramp + constant motional E, evaluated at the particle's own position</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+            <button class="btn" id="btn-camera-toggle">Orthographic View</button>
+            <button class="btn" id="btn-reset-cam">Reset View</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="sidebar">
+            <div class="section-title">Theme</div>
+            <div class="control-group">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="check-light-theme">
+                    <span class="checkmark"></span>
+                    Light background theme
+                </label>
+            </div>
+
+            <div class="section-title">View domain</div>
+            <div class="control-group">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="check-auto-domain" checked>
+                    <span class="checkmark"></span>
+                    Auto-scale to shock width (5&times;Lsh)
+                </label>
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">Domain half-width (x range)</span><span class="slider-val" id="val-domain">12.0</span></div>
+                    <input type="range" id="input-domain" min="2" max="150" step="1" value="12">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">Shock plane size</span><span class="slider-val" id="val-shockscale">1.00&times;</span></div>
+                    <input type="range" id="input-shockscale" min="0.3" max="5" step="0.05" value="1.0">
+                </div>
+                <div class="derived-row"><span class="derived-label">Projection wall (auto)</span><span class="derived-val" id="der-projsize">— d_i</span></div>
+                <label class="checkbox-container" style="font-size: 0.78rem; margin-top: 0.1rem;">
+                    <input type="checkbox" id="check-projz-auto" checked>
+                    <span class="checkmark"></span>
+                    Place projection wall at back (-z end)
+                </label>
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">Projection wall z-position</span><span class="slider-val" id="val-projz">-4.80</span></div>
+                    <input type="range" id="input-projz" min="-60" max="60" step="0.5" value="-4.8">
+                </div>
+            </div>
+
+            <div class="section-title">Species masses (g_mass)</div>
+            <div class="control-group">
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">me (unit of m_particle)</span><span class="slider-val" id="val-me">1.00</span></div>
+                    <input type="range" id="input-me" min="0.2" max="5" step="0.05" value="1.0">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">mi</span><span class="slider-val" id="val-mi">25.0</span></div>
+                    <input type="range" id="input-mi" min="1" max="100" step="1" value="25">
+                </div>
+                <div class="derived-row"><span class="derived-label">x0 = sqrt(mi/me)</span><span class="derived-val" id="der-x0">5.000</span></div>
+            </div>
+
+            <div class="section-title">Field mode</div>
+            <div class="control-group">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="check-b-uniform">
+                    <span class="checkmark"></span>
+                    Use uniform B (upstream value, no shock ramp)
+                </label>
+                <label class="checkbox-container">
+                    <input type="checkbox" id="check-e-enabled" checked>
+                    <span class="checkmark"></span>
+                    Enable E field (uncheck for E = 0)
+                </label>
+                <label class="checkbox-container">
+                    <input type="checkbox" id="check-periodic-yz" checked>
+                    <span class="checkmark"></span>
+                    Periodic y-z boundaries (wrap at shock plane size)
+                </label>
+            </div>
+
+            <div class="section-title">Upstream / shock (g_inputvari)</div>
+            <div class="control-group">
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">v<sub>A</sub></span><span class="slider-val" id="val-va">0.20</span></div>
+                    <input type="range" id="input-va" min="0.05" max="1" step="0.01" value="0.2">
+                </div>
+                <div class="derived-row"><span class="derived-label">B0 = vA &middot; x0</span><span class="derived-val" id="der-b0">1.000</span></div>
+                <div class="derived-row"><span class="derived-label">&omega;<sub>c</sub> = |q|B0 / m</span><span class="derived-val" id="der-wci">0.040</span></div>
+
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">v<sub>sh</sub></span><span class="slider-val" id="val-vsh">-0.1333</span></div>
+                    <input type="range" id="input-vsh" min="-1" max="1" step="0.001" value="-0.1333">
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">&theta;<sub>Bn</sub></span><span class="slider-val" id="val-theta">30</span></div>
+                    <input type="range" id="input-theta" min="0" max="90" step="1" value="30">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">&phi;<sub>Bn</sub></span><span class="slider-val" id="val-phi">0</span></div>
+                    <input type="range" id="input-phi" min="0" max="360" step="1" value="0">
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">L<sub>sh</sub></span><span class="slider-val" id="val-lsh">0.50</span></div>
+                    <input type="range" id="input-lsh" min="0.05" max="5" step="0.05" value="0.5">
+                </div>
+                <div class="derived-row"><span class="derived-label">Lsh = x0 &middot; USER_Lsh</span><span class="derived-val" id="der-lsh">2.500</span></div>
+
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">B1 (compression const.)</span><span class="slider-val" id="val-b1">4.00</span></div>
+                    <input type="range" id="input-b1" min="0.5" max="8" step="0.1" value="4.0">
+                </div>
+                <div class="derived-row"><span class="derived-label">B<sub>downstream</sub>/B<sub>upstream</sub> (by)</span><span class="derived-val" id="der-compression">4.58</span></div>
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">xt (shock location within box)</span><span class="slider-val" id="val-xt">0.0</span></div>
+                    <input type="range" id="input-xt" min="-60" max="60" step="0.5" value="0">
+                </div>
+            </div>
+
+            <div class="section-title">Test particle</div>
+            <div class="control-group">
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">m_particle</span><span class="slider-val" id="val-mp">1.00</span></div>
+                    <input type="range" id="input-mp" min="0.1" max="50" step="0.1" value="1.0">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">q_particle</span><span class="slider-val" id="val-qp">1.00</span></div>
+                    <input type="range" id="input-qp" min="-2" max="2" step="0.05" value="1.0">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-header-row">
+                        <span class="slider-label" style="flex: 1;">Initial x1 - xt (shock frame, d<sub>i</sub>)</span>
+                        <input type="number" class="num-entry" id="num-x0-di" step="0.1" value="50.0">
+                    </div>
+                    <input type="range" id="input-s0" min="-50" max="50" step="0.5" value="10">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-header-row">
+                        <span class="slider-label" style="flex: 1;">Initial y (d<sub>i</sub>)</span>
+                        <input type="number" class="num-entry" id="num-y0-di" step="0.1" value="0">
+                    </div>
+                    <input type="range" id="input-y0" min="-30" max="30" step="0.5" value="0">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-header-row">
+                        <span class="slider-label" style="flex: 1;">Initial z (d<sub>i</sub>)</span>
+                        <input type="number" class="num-entry" id="num-z0-di" step="0.1" value="0">
+                    </div>
+                    <input type="range" id="input-z0" min="-30" max="30" step="0.5" value="0">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-header-row">
+                        <span class="slider-label" style="flex: 1;">v<sub>x0</sub> (units of c)</span>
+                        <input type="number" class="num-entry" id="num-vx0" step="0.001" min="-1" max="1" value="-0.1333">
+                    </div>
+                    <input type="range" id="input-vx0" min="-1" max="1" step="0.001" value="-0.1333">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-header-row">
+                        <span class="slider-label" style="flex: 1;">v<sub>y0</sub> (units of c)</span>
+                        <input type="number" class="num-entry" id="num-vy0" step="0.001" min="-1" max="1" value="-0.2">
+                    </div>
+                    <input type="range" id="input-vy0" min="-1" max="1" step="0.001" value="-0.2">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-header-row">
+                        <span class="slider-label" style="flex: 1;">v<sub>z0</sub> (units of c)</span>
+                        <input type="number" class="num-entry" id="num-vz0" step="0.001" min="-1" max="1" value="0.1">
+                    </div>
+                    <input type="range" id="input-vz0" min="-1" max="1" step="0.001" value="0.1">
+                </div>
+                <button class="btn" id="btn-reset-traj">Reset trajectory</button>
+            </div>
+
+            <div class="section-title">Presets</div>
+            <div class="control-group">
+                <div class="btn-row">
+                    <button class="btn" id="preset-upstream">Place upstream</button>
+                    <button class="btn" id="preset-downstream">Place downstream</button>
+                </div>
+                <div class="btn-row">
+                    <button class="btn" id="preset-ramp">At the ramp</button>
+                    <button class="btn" id="preset-gyrate">Gyrating near shock</button>
+                </div>
+            </div>
+
+            <div class="section-title">Playback</div>
+            <div class="control-group">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="check-animate" checked>
+                    <span class="checkmark"></span>
+                    Animate
+                </label>
+                <div class="slider-container">
+                    <div class="slider-header"><span class="slider-label">Simulation speed</span><span class="slider-val" id="val-speed">1.00&times;</span></div>
+                    <input type="range" id="input-speed" min="0.01" max="20" step="0.01" value="0.5">
+                </div>
+            </div>
+
+            <div class="section-title">Trajectory color scale (|p| / norm, jet)</div>
+            <div class="control-group">
+                <div class="slider-container">
+                    <div class="slider-header-row">
+                        <span class="slider-label" style="flex: 1;">Line width (d<sub>i</sub>)</span>
+                        <input type="number" class="num-entry" id="num-trail-width" step="0.01" min="0.001" value="0.3">
+                    </div>
+                </div>
+                <div class="slider-container">
+                    <div class="slider-header-row">
+                        <span class="slider-label" style="flex: 1;">Color scale min</span>
+                        <input type="number" class="num-entry" id="num-mom-min" step="0.001" min="0.0001" value="0.01">
+                    </div>
+                </div>
+                <div class="slider-container">
+                    <div class="slider-header-row">
+                        <span class="slider-label" style="flex: 1;">Color scale max</span>
+                        <input type="number" class="num-entry" id="num-mom-max" step="0.01" min="0.0001" value="1">
+                    </div>
+                </div>
+                <label class="checkbox-container" style="font-size: 0.78rem; margin-top: 0.1rem;">
+                    <input type="checkbox" id="check-mom-manual-norm">
+                    <span class="checkmark"></span>
+                    Manual normalization (uncheck for |vsh&middot;mi|)
+                </label>
+                <div class="slider-container">
+                    <div class="slider-header-row">
+                        <span class="slider-label" style="flex: 1;">Manual norm value</span>
+                        <input type="number" class="num-entry" id="num-mom-norm" step="0.01" min="0.0001" value="1">
+                    </div>
+                </div>
+                <div class="derived-row"><span class="derived-label">Current norm |vsh&middot;mi|</span><span class="derived-val" id="der-mom-norm">3.33</span></div>
+            </div>
+
+            <div class="section-title">Visual layers</div>
+            <div class="control-group">
+                <label class="checkbox-container vec-trail">
+                    <input type="checkbox" id="check-show-trail" checked>
+                    <span class="checkmark"></span>
+                    Show trajectory
+                </label>
+                <label class="checkbox-container vec-trail" style="padding-left: 1.25rem; font-size: 0.75rem;">
+                    <input type="checkbox" id="check-show-xyproj" checked>
+                    <span class="checkmark" style="width: 12px; height: 12px; border-radius: 2px;"></span>
+                    Show x-y plane projection
+                </label>
+                <label class="checkbox-container vec-b">
+                    <input type="checkbox" id="check-show-b" checked>
+                    <span class="checkmark"></span>
+                    Show B(x) profile arrows
+                </label>
+                <label class="checkbox-container vec-b" style="padding-left: 1.25rem; font-size: 0.75rem;">
+                    <input type="checkbox" id="check-move-b" checked>
+                    <span class="checkmark" style="width: 12px; height: 12px; border-radius: 2px;"></span>
+                    Move field lines at v(x)
+                </label>
+                <label class="checkbox-container vec-e">
+                    <input type="checkbox" id="check-show-e" checked>
+                    <span class="checkmark"></span>
+                    Show E field arrows
+                </label>
+                <label class="checkbox-container vec-v">
+                    <input type="checkbox" id="check-show-v" checked>
+                    <span class="checkmark"></span>
+                    Show velocity vector
+                </label>
+                <label class="checkbox-container vec-f">
+                    <input type="checkbox" id="check-show-f" checked>
+                    <span class="checkmark"></span>
+                    Show Lorentz force vector
+                </label>
+                <label class="checkbox-container vec-drift">
+                    <input type="checkbox" id="check-show-drift">
+                    <span class="checkmark"></span>
+                    Show local E&times;B drift
+                </label>
+                <label class="checkbox-container vec-shock">
+                    <input type="checkbox" id="check-show-shockplane" checked>
+                    <span class="checkmark"></span>
+                    Show shock ramp plane
+                </label>
+                <label class="checkbox-container vec-shock" style="padding-left: 1.25rem; font-size: 0.75rem;">
+                    <input type="checkbox" id="check-show-bmag-ribbon" checked>
+                    <span class="checkmark" style="width: 12px; height: 12px; border-radius: 2px;"></span>
+                    Overlay |B(x)| ramp on floor
+                </label>
+                <label class="checkbox-container vec-shock" style="padding-left: 1.25rem; font-size: 0.75rem;">
+                    <input type="checkbox" id="check-show-bmag-volume" checked>
+                    <span class="checkmark" style="width: 12px; height: 12px; border-radius: 2px;"></span>
+                    Show |B(x)| volume fill (3D)
+                </label>
+                <div style="padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.2rem;">
+                    <div class="slider-container">
+                        <div class="slider-header"><span class="slider-label" style="font-size: 0.72rem;">Volume resolution</span><span class="slider-val" id="val-volres">36</span></div>
+                        <input type="range" id="input-volres" min="8" max="90" step="2" value="36">
+                    </div>
+                    <div class="slider-container">
+                        <div class="slider-header"><span class="slider-label" style="font-size: 0.72rem;">Volume opacity</span><span class="slider-val" id="val-volop">0.06</span></div>
+                        <input type="range" id="input-volop" min="0.01" max="0.3" step="0.01" value="0.06">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="workspace">
+            <div id="canvas-container">
+                <div class="hud hud-3col">
+                    <div class="hud-row"><span class="hud-label">Speed |v|</span><span class="hud-value highlight" id="tc-speed">0.000</span></div>
+                    <div class="hud-row"><span class="hud-label">Kinetic energy</span><span class="hud-value" id="hud-ke">0.000</span></div>
+                    <div class="hud-row"><span class="hud-label">|p| / |vsh&middot;mi|</span><span class="hud-value highlight" id="hud-mom">0.000</span></div>
+                    <div class="hud-row"><span class="hud-label">x1 (absolute)</span><span class="hud-value" id="hud-x1">540.00</span></div>
+                    <div class="hud-row"><span class="hud-label">x1 - xt, y, z</span><span class="hud-value" id="hud-pos">-10.00, 0.00, 0.00</span></div>
+                    <div class="hud-row"><span class="hud-label">Local |B(x)|</span><span class="hud-value" id="hud-bmag">—</span></div>
+                    <div class="hud-row"><span class="hud-label">Local B = (bx,by,bz)</span><span class="hud-value" id="hud-bvec">—</span></div>
+                    <div class="hud-row"><span class="hud-label">E = (0,0,Ez)</span><span class="hud-value" id="hud-evec">—</span></div>
+                    <div class="hud-row"><span class="hud-label">Pitch angle to local B</span><span class="hud-value" id="hud-pitch">—</span></div>
+                    <div class="hud-row"><span class="hud-label">Larmor radius (local)</span><span class="hud-value" id="hud-larmor">—</span></div>
+                    <div class="hud-row"><span class="hud-label">Cyclotron freq (local)</span><span class="hud-value" id="hud-fc">—</span></div>
+                    <div class="hud-row"><span class="hud-label">Local E&times;B drift</span><span class="hud-value" id="hud-drift">0.000</span></div>
+                    <div class="hud-row"><span class="hud-label">sqrt() domain</span><span class="hud-value" id="hud-domain">OK</span></div>
+                    <div class="hud-row"><span class="hud-label">Elapsed time t</span><span class="hud-value" id="tc-time">0.00</span></div>
+                    <div class="hud-row"><span class="hud-label">t (&omega;<sub>c</sub><sup>-1</sup>, particle)</span><span class="hud-value highlight" id="tc-time-wci">0.00</span></div>
+                </div>
+                <div class="legend">
+                    <div class="legend-item"><span class="legend-color" style="background: var(--color-b);"></span>B(x) ramp</div>
+                    <div class="legend-item"><span class="legend-color" style="background: var(--color-e);"></span>E (constant)</div>
+                    <div class="legend-item"><span class="legend-color" style="background: linear-gradient(90deg, #0000ff, #00ffff, #00ff00, #ffff00, #ff0000);"></span>Trajectory (|p|/norm, jet, log scale)</div>
+                    <div class="legend-item"><span class="legend-color" style="background: var(--color-v);"></span>Velocity v</div>
+                    <div class="legend-item"><span class="legend-color" style="background: var(--color-f);"></span>Force q(E+v&times;B)</div>
+                    <div class="legend-item"><span class="legend-color" style="background: var(--color-drift);"></span>Local E&times;B drift</div>
+                    <div class="legend-item"><span class="legend-color" style="background: var(--color-shock);"></span>Shock ramp (x1=xt)</div>
+                    <div class="legend-item"><span class="legend-color" style="background: linear-gradient(90deg, #0a0e1c, #00e5ff);"></span>|B(x)| floor overlay</div>
+                    <div class="legend-item"><span class="legend-color" style="background: linear-gradient(90deg, #0a0e1c, #00e5ff); opacity: 0.6;"></span>|B(x)| volume fill</div>
+                    <div class="legend-item"><span class="legend-color" style="background: #80cbff;"></span>x-y projection</div>
+                </div>
+            </div>
+            <div class="formula-bar">
+                <div class="formula-column">
+                    <h3>Field profile (exact, as given)</h3>
+                    <p>x0 = sqrt(mi/me), B0 = vA&middot;x0. With s=(x1-xt)/Lsh: bx = B0 cos&theta;, by = B0 sin&theta; + 0.5(1-tanh s)&middot;B0&middot;(-sin&theta;+sqrt(sin&sup2;&theta;+B1&sup2;-1)), bz=0. x1-xt &gt; 0 is upstream (undisturbed field), x1-xt &lt; 0 is downstream (compressed). "Uniform B" pins by to its upstream value (tanh&rarr;1) everywhere, dropping the ramp. vsh is a direct input parameter; Ez = -vsh&middot;B0 sin&theta; (Ex=Ey=0), or E=0 if disabled. &phi;<sub>Bn</sub> is exposed but, per the code given, does not enter B or E (bz is fixed at 0). B field-line markers advect at v(s) = |vsh|&middot;[-1 + 0.375(1-tanh s)], s=(x1-xt)/Lsh: |v| goes from |vsh| far upstream (x1-xt&gt;0) down to 0.25|vsh| far downstream (x1-xt&lt;0), so markers automatically pile up and read denser on the downstream side, since local marker density &prop; 1/|v| by continuity. With |vsh| the flow direction is fixed (always toward -x, upstream&rarr;downstream) regardless of the sign of the vsh slider.</p>
+                </div>
+                <div class="formula-column">
+                    <h3>Integration</h3>
+                    <p>m dv/dt = q(E + v&times;B), Boris pusher, with B and E resampled from the profile at the particle's current x1 every substep — so as the particle crosses the ramp near x1=xt it feels the changing field self-consistently, including possible shock-drift reflection if v is mostly along B on the upstream side. Internally all lengths (x1-xt, xt, domain size, Larmor radius, sliders) are integrated in the code's native units; every displayed length is converted to ion inertial length units via d<sub>i</sub> = d &middot; sqrt(mi/me), so distances read directly in d<sub>i</sub>. Time is likewise shown as t&middot;&omega;<sub>c</sub>, with &omega;<sub>c</sub> = |q<sub>particle</sub>|B0/m<sub>particle</sub> — the tracked particle's own gyro frequency at the reference field B0 (not the fixed bulk-ion mi), so it updates if you change the test particle's mass or charge. v<sub>x0</sub>, v<sub>y0</sub>, v<sub>z0</sub> are labeled in units of c: the code's x0 = sqrt(mi/me) (electron-skin-depth normalization) and B0 = vA&middot;x0 formula match the standard de-based normalization used in PIC/hybrid Bell-instability shock setups (lengths in c/&omega;<sub>pe</sub>, time in &omega;<sub>pe</sub><sup>-1</sup>, velocities in c) — this wasn't stated explicitly in the code you provided, so double check it against your own normalization if it differs.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const els = id => document.getElementById(id);
+        const checkLightTheme = els('check-light-theme');
+        const checkAutoDomain = els('check-auto-domain'), inputDomain = els('input-domain'), valDomain = els('val-domain');
+        const inputShockScale = els('input-shockscale'), valShockScale = els('val-shockscale');
+        const checkProjZAuto = els('check-projz-auto'), inputProjZ = els('input-projz'), valProjZ = els('val-projz');
+        const derProjSize = els('der-projsize');
+        const inputMe = els('input-me'), inputMi = els('input-mi');
+        const inputVa = els('input-va'), inputVsh = els('input-vsh');
+        const inputTheta = els('input-theta'), inputPhi = els('input-phi');
+        const inputLsh = els('input-lsh'), inputB1 = els('input-b1'), inputXt = els('input-xt');
+        const inputMp = els('input-mp'), inputQp = els('input-qp');
+        const inputS0 = els('input-s0'), inputVx0 = els('input-vx0'), inputVy0 = els('input-vy0'), inputVz0 = els('input-vz0');
+        const inputSpeed = els('input-speed');
+        const checkAnimate = els('check-animate');
+        const checkShowTrail = els('check-show-trail'), checkShowB = els('check-show-b'), checkShowE = els('check-show-e');
+        const checkMoveB = els('check-move-b');
+        const checkShowV = els('check-show-v'), checkShowF = els('check-show-f'), checkShowDrift = els('check-show-drift');
+        const checkShowShockPlane = els('check-show-shockplane');
+        const checkShowBmagRibbon = els('check-show-bmag-ribbon');
+        const checkShowBmagVolume = els('check-show-bmag-volume');
+        const inputVolRes = els('input-volres'), valVolRes = els('val-volres');
+        const inputVolOp = els('input-volop'), valVolOp = els('val-volop');
+        const checkShowXYProj = els('check-show-xyproj');
+        const checkBUniform = els('check-b-uniform'), checkEEnabled = els('check-e-enabled');
+        const checkPeriodicYZ = els('check-periodic-yz');
+        const numMomMin = els('num-mom-min'), numMomMax = els('num-mom-max');
+        const numTrailWidth = els('num-trail-width');
+        const checkMomManualNorm = els('check-mom-manual-norm'), numMomNorm = els('num-mom-norm');
+        const derMomNorm = els('der-mom-norm');
+
+        const valMap = {
+            'input-me': els('val-me'), 'input-mi': els('val-mi'), 'input-va': els('val-va'),
+            'input-vsh': els('val-vsh'), 'input-theta': els('val-theta'), 'input-phi': els('val-phi'),
+            'input-lsh': els('val-lsh'), 'input-b1': els('val-b1'),
+            'input-mp': els('val-mp'), 'input-qp': els('val-qp')
+        };
+        const digitsMap = { 'input-theta': 0, 'input-phi': 0 };
+        const valXt = els('val-xt');
+        const numX0Di = els('num-x0-di'), numY0Di = els('num-y0-di'), numZ0Di = els('num-z0-di');
+        const inputY0 = els('input-y0'), inputZ0 = els('input-z0');
+        const numVx0 = els('num-vx0'), numVy0 = els('num-vy0'), numVz0 = els('num-vz0');
+
+        function updateLengthLabels() {
+            valXt.textContent = (xt * x0).toFixed(1) + ' d_i';
+            valDomain.textContent = (viewHalf * x0).toFixed(1) + ' d_i';
+            valProjZ.textContent = (projWallZ * x0).toFixed(2) + ' d_i';
+
+            const shockScale = parseFloat(inputShockScale.value);
+            const shockSizeDi = viewHalf * 0.8 * shockScale * x0;
+            valShockScale.textContent = shockSizeDi.toFixed(2) + ' d_i (' + shockScale.toFixed(2) + '\u00d7)';
+
+            const projWidthDi = viewHalf * 1.8 * x0;
+            const projHeightDi = viewHalf * 0.8 * shockScale * x0;
+            derProjSize.textContent = projWidthDi.toFixed(2) + ' \u00d7 ' + projHeightDi.toFixed(2) + ' d_i';
+        }
+
+        function syncAllLabels() {
+            Object.keys(valMap).forEach(id => {
+                const el = els(id);
+                const d = digitsMap[id] === undefined ? 2 : digitsMap[id];
+                valMap[id].textContent = parseFloat(el.value).toFixed(d);
+            });
+            els('val-speed').textContent = parseFloat(inputSpeed.value).toFixed(2) + '\u00d7';
+            valVolRes.textContent = inputVolRes.value;
+            valVolOp.textContent = parseFloat(inputVolOp.value).toFixed(2);
+        }
+
+        const derX0 = els('der-x0'), derB0 = els('der-b0'), derWci = els('der-wci'), derLsh = els('der-lsh');
+        const derCompression = els('der-compression');
+
+        const hudSpeed = els('tc-speed'), hudKe = els('hud-ke'), hudMom = els('hud-mom'), hudX1 = els('hud-x1'), hudPos = els('hud-pos');
+        const hudBmag = els('hud-bmag'), hudBvec = els('hud-bvec'), hudEvec = els('hud-evec');
+        const hudPitch = els('hud-pitch'), hudLarmor = els('hud-larmor'), hudFc = els('hud-fc');
+        const hudDrift = els('hud-drift'), hudDomain = els('hud-domain'), hudTime = els('tc-time'), hudTimeWci = els('tc-time-wci');
+
+        let scene, camera, perspectiveCamera, orthographicCamera, renderer, controls;
+        let isOrthographic = false;
+        const container = document.getElementById('canvas-container');
+
+        let me, mi, x0, vA, B0, vsh, thetaRad, LshUser, Lsh, B1, xt, mParticle, qParticle, wci;
+        let domainOK = true;
+        let bTracerX = [];
+        const N_TRACERS = 22;
+
+        let pos = new THREE.Vector3(0, 0, 0);
+        let vel = new THREE.Vector3(0, 0, 0);
+        let simTime = 0;
+        const trailPoints = [];
+        let frameWrapped = false;
+
+        let fieldGroupB, fieldGroupE, trailLine, particleMesh, vecGroup, shockPlane, boxLines, gridHelper, domainLabelGroup;
+        let xyPlaneMesh, xyProjLine, xyProjMarker;
+        let bmagRibbonMesh;
+        let bmagVolumeGroup;
+        let gizmoScene, gizmoCamera;
+        const GIZMO_SIZE = 100;
+        let viewHalf = 12;
+        const DEFAULT_VX0 = -0.1333, DEFAULT_VY0 = -0.2, DEFAULT_VZ0 = 0.1;
+        let projWallZ = -4.8;
+
+        function readParams() {
+            me = parseFloat(inputMe.value);
+            mi = parseFloat(inputMi.value);
+            x0 = Math.sqrt(mi / me);
+            vA = parseFloat(inputVa.value);
+            B0 = vA * x0;
+            vsh = parseFloat(inputVsh.value);
+            thetaRad = Math.PI / 180 * parseFloat(inputTheta.value);
+            LshUser = parseFloat(inputLsh.value);
+            Lsh = Math.max(0.05, x0 * LshUser);
+            B1 = parseFloat(inputB1.value);
+            xt = parseFloat(inputXt.value);
+            mParticle = parseFloat(inputMp.value);
+            qParticle = parseFloat(inputQp.value);
+
+            derX0.textContent = x0.toFixed(3);
+            derB0.textContent = B0.toFixed(3);
+            wci = Math.abs(qParticle) * B0 / mParticle;
+            derWci.textContent = wci.toFixed(4);
+
+            const sinT = Math.sin(thetaRad);
+            const domainRaw = sinT * sinT + B1 * B1 - 1;
+            const compRatio = sinT > 1e-4 ? Math.sqrt(Math.max(0, domainRaw)) / sinT : NaN;
+            derCompression.textContent = isFinite(compRatio) ? compRatio.toFixed(2) + '\u00d7' : 'n/a (\u03b8=0)';
+            derLsh.textContent = (Lsh * x0).toFixed(3) + ' d_i';
+
+            viewHalf = checkAutoDomain.checked ? Math.max(4, 5 * Lsh) : parseFloat(inputDomain.value);
+            if (checkAutoDomain.checked) {
+                inputDomain.value = viewHalf.toFixed(1);
+            }
+
+            projWallZ = checkProjZAuto.checked ? -viewHalf * 0.4 : parseFloat(inputProjZ.value);
+            if (checkProjZAuto.checked) {
+                inputProjZ.value = projWallZ.toFixed(1);
+            }
+
+            updateLengthLabels();
+        }
+
+        function fieldBAt(x) {
+            const sinT = Math.sin(thetaRad), cosT = Math.cos(thetaRad);
+            const bx = B0 * cosT;
+
+            if (checkBUniform.checked) {
+                domainOK = true;
+                return new THREE.Vector3(bx, B0 * sinT, 0);
+            }
+
+            const s = (x - xt) / Lsh;
+            const t = Math.tanh(s);
+            const domainRaw = sinT * sinT + B1 * B1 - 1;
+            domainOK = domainRaw >= 0;
+            const sq = Math.sqrt(Math.max(0, domainRaw));
+            const by = B0 * sinT + 0.5 * (1 - t) * B0 * (-sinT + sq);
+            return new THREE.Vector3(bx, by, 0);
+        }
+
+        function fieldEConst() {
+            if (!checkEEnabled.checked) return new THREE.Vector3(0, 0, 0);
+            const sinT = Math.sin(thetaRad);
+            const Ez = -1.0 * (vsh * (B0 * sinT));
+            return new THREE.Vector3(0, 0, Ez);
+        }
+
+        function fieldLineSpeed(x) {
+            const s = (x - xt) / Lsh;
+            return Math.abs(vsh) * (-1 + 0.375 * (1 - Math.tanh(s)));
+        }
+
+        function seedTracers() {
+            bTracerX = [];
+            const xMin = -viewHalf * 0.9, xMax = viewHalf * 0.9;
+            const nSamples = 400;
+            const xs = [];
+            const density = [];
+            const floor = 0.15 * Math.max(1e-6, B0);
+            for (let i = 0; i < nSamples; i++) {
+                const x = xMin + (i / (nSamples - 1)) * (xMax - xMin);
+                xs.push(x);
+                density.push(fieldBAt(x).length() + floor);
+            }
+            const cdf = [0];
+            let cum = 0;
+            for (let i = 1; i < nSamples; i++) {
+                cum += 0.5 * (density[i] + density[i - 1]) * (xs[i] - xs[i - 1]);
+                cdf.push(cum);
+            }
+            const total = Math.max(1e-9, cdf[cdf.length - 1]);
+            for (let k = 0; k < N_TRACERS; k++) {
+                const target = ((k + 0.5) / N_TRACERS) * total;
+                let idx = 0;
+                while (idx < cdf.length - 1 && cdf[idx] < target) idx++;
+                let xVal;
+                if (idx === 0) {
+                    xVal = xs[0];
+                } else {
+                    const c0 = cdf[idx - 1], c1 = cdf[idx];
+                    const frac = (target - c0) / Math.max(1e-9, c1 - c0);
+                    xVal = xs[idx - 1] + frac * (xs[idx] - xs[idx - 1]);
+                }
+                bTracerX.push(xVal);
+            }
+        }
+
+        function makeTextSprite(text, hexColor, fontPx, canvasW, canvasH, scaleW, scaleH) {
+            const canvas = document.createElement('canvas');
+            canvas.width = canvasW; canvas.height = canvasH;
+            const ctx = canvas.getContext('2d');
+            ctx.font = 'bold ' + fontPx + 'px monospace';
+            ctx.fillStyle = hexColor;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, canvasW / 2, canvasH / 2);
+            const tex = new THREE.CanvasTexture(canvas);
+            const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false, depthWrite: false, transparent: true }));
+            sprite.scale.set(scaleW, scaleH, 1);
+            return sprite;
+        }
+
+        function makeAxisLabel(text, hexColor) {
+            return makeTextSprite(text, hexColor, 44, 64, 64, 0.55, 0.55);
+        }
+
+        function buildGizmo() {
+            gizmoScene = new THREE.Scene();
+            gizmoCamera = new THREE.PerspectiveCamera(45, 1, 0.1, 20);
+
+            const axes = [
+                { dir: new THREE.Vector3(1, 0, 0), color: 0xff5555, hex: '#ff5555', label: 'X' },
+                { dir: new THREE.Vector3(0, 1, 0), color: 0x55ff88, hex: '#55ff88', label: 'Y' },
+                { dir: new THREE.Vector3(0, 0, 1), color: 0x55aaff, hex: '#55aaff', label: 'Z' }
+            ];
+            axes.forEach(a => {
+                const arrow = new THREE.ArrowHelper(a.dir, new THREE.Vector3(0, 0, 0), 1.1, a.color, 0.28, 0.16);
+                gizmoScene.add(arrow);
+                const sprite = makeAxisLabel(a.label, a.hex);
+                sprite.position.copy(a.dir).multiplyScalar(1.55);
+                gizmoScene.add(sprite);
+            });
+        }
+
+        function renderGizmo() {
+            const dir = camera.position.clone().sub(controls.target);
+            if (dir.lengthSq() < 1e-6) dir.set(1, 1, 1);
+            dir.normalize();
+            gizmoCamera.position.copy(dir).multiplyScalar(4);
+            gizmoCamera.up.copy(camera.up);
+            gizmoCamera.lookAt(0, 0, 0);
+
+            const x = 16;
+            const y = container.clientHeight - GIZMO_SIZE - 16;
+            renderer.setViewport(x, y, GIZMO_SIZE, GIZMO_SIZE);
+            renderer.setScissor(x, y, GIZMO_SIZE, GIZMO_SIZE);
+            renderer.setScissorTest(true);
+            renderer.clearDepth();
+            renderer.render(gizmoScene, gizmoCamera);
+            renderer.setScissorTest(false);
+            renderer.setViewport(0, 0, container.clientWidth, container.clientHeight);
+        }
+
+        function resetTrajectory() {
+            const xDi = parseFloat(numX0Di.value);
+            const yDi = parseFloat(numY0Di.value);
+            const zDi = parseFloat(numZ0Di.value);
+            pos.set(xt + xDi / x0, yDi / x0, zDi / x0);
+            vel.set(parseFloat(numVx0.value), parseFloat(numVy0.value), parseFloat(numVz0.value));
+            simTime = 0;
+            trailPoints.length = 0;
+        }
+
+        function applyPreset(name) {
+            readParams();
+            if (name === 'upstream') { inputS0.value = (4 * Lsh).toFixed(1); inputVx0.value = -0.3; inputVy0.value = 0; inputVz0.value = 0; }
+            else if (name === 'downstream') { inputS0.value = (-4 * Lsh).toFixed(1); inputVx0.value = 0.2; inputVy0.value = 0; inputVz0.value = 0; }
+            else if (name === 'ramp') { inputS0.value = 0; inputVx0.value = -0.2; inputVy0.value = 0.1; inputVz0.value = 0; }
+            else if (name === 'gyrate') { inputS0.value = (1 * Lsh).toFixed(1); inputVx0.value = -0.2; inputVy0.value = 0.6 * B0; inputVz0.value = 0; }
+            inputY0.value = 0;
+            inputZ0.value = 0;
+            numX0Di.value = (parseFloat(inputS0.value) * x0).toFixed(2);
+            numY0Di.value = '0.0';
+            numZ0Di.value = '0.0';
+            numVx0.value = inputVx0.value;
+            numVy0.value = inputVy0.value;
+            numVz0.value = inputVz0.value;
+            syncAllLabels();
+            readParams();
+            buildEFieldArrows();
+            resetTrajectory();
+        }
+
+        function init() {
+            scene = new THREE.Scene();
+
+            perspectiveCamera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 500);
+            orthographicCamera = new THREE.OrthographicCamera(-10, 10, 10, -10, 0.1, 500);
+            camera = perspectiveCamera;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.08;
+
+            fieldGroupB = new THREE.Group(); scene.add(fieldGroupB);
+            bmagVolumeGroup = new THREE.Group(); scene.add(bmagVolumeGroup);
+            fieldGroupE = new THREE.Group(); scene.add(fieldGroupE);
+            vecGroup = new THREE.Group(); scene.add(vecGroup);
+
+            const trailGeo = new THREE.BufferGeometry();
+            const trailMat = new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide, transparent: true, opacity: 0.92, depthWrite: false });
+            trailLine = new THREE.Mesh(trailGeo, trailMat);
+            scene.add(trailLine);
+
+            const particleGeo = new THREE.SphereGeometry(0.12, 20, 20);
+            const particleMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            particleMesh = new THREE.Mesh(particleGeo, particleMat);
+            scene.add(particleMesh);
+
+            const planeGeo = new THREE.PlaneGeometry(1, 1);
+            const planeMat = new THREE.MeshBasicMaterial({ color: 0xd500f9, transparent: true, opacity: 0.12, side: THREE.DoubleSide });
+            shockPlane = new THREE.Mesh(planeGeo, planeMat);
+            shockPlane.rotation.y = Math.PI / 2;
+            scene.add(shockPlane);
+
+            const xyPlaneGeo = new THREE.PlaneGeometry(1, 1);
+            const xyPlaneMat = new THREE.MeshBasicMaterial({ color: 0x80cbff, transparent: true, opacity: 0.06, side: THREE.DoubleSide });
+            xyPlaneMesh = new THREE.Mesh(xyPlaneGeo, xyPlaneMat);
+            scene.add(xyPlaneMesh);
+
+            const xyProjGeo = new THREE.BufferGeometry();
+            const xyProjMat = new THREE.LineBasicMaterial({ color: 0x80cbff, transparent: true, opacity: 0.55 });
+            xyProjLine = new THREE.LineSegments(xyProjGeo, xyProjMat);
+            scene.add(xyProjLine);
+
+            const xyProjMarkerGeo = new THREE.SphereGeometry(0.07, 14, 14);
+            const xyProjMarkerMat = new THREE.MeshBasicMaterial({ color: 0x80cbff, transparent: true, opacity: 0.85 });
+            xyProjMarker = new THREE.Mesh(xyProjMarkerGeo, xyProjMarkerMat);
+            scene.add(xyProjMarker);
+
+            window.addEventListener('resize', onWindowResize);
+
+            els('btn-camera-toggle').addEventListener('click', () => {
+                isOrthographic = !isOrthographic;
+                camera = isOrthographic ? orthographicCamera : perspectiveCamera;
+                controls.object = camera;
+                els('btn-camera-toggle').textContent = isOrthographic ? 'Perspective View' : 'Orthographic View';
+                resetCamera();
+                onWindowResize();
+            });
+            els('btn-reset-cam').addEventListener('click', resetCamera);
+            els('btn-reset-traj').addEventListener('click', () => {
+                numVx0.value = DEFAULT_VX0;
+                numVy0.value = DEFAULT_VY0;
+                numVz0.value = DEFAULT_VZ0;
+                inputVx0.value = DEFAULT_VX0;
+                inputVy0.value = DEFAULT_VY0;
+                inputVz0.value = DEFAULT_VZ0;
+                resetTrajectory();
+            });
+            els('preset-upstream').addEventListener('click', () => applyPreset('upstream'));
+            els('preset-downstream').addEventListener('click', () => applyPreset('downstream'));
+            els('preset-ramp').addEventListener('click', () => applyPreset('ramp'));
+            els('preset-gyrate').addEventListener('click', () => applyPreset('gyrate'));
+
+            checkLightTheme.addEventListener('change', () => {
+                document.body.classList.toggle('light-theme', checkLightTheme.checked);
+            });
+
+            [inputMe, inputMi, inputVa, inputVsh, inputTheta, inputPhi, inputLsh, inputB1, inputXt, inputMp, inputQp, inputDomain, inputShockScale, inputProjZ, inputVolRes, inputVolOp].forEach(el => {
+                el.addEventListener('input', () => {
+                    syncAllLabels();
+                    readParams();
+                    buildScene();
+                    buildEFieldArrows();
+                });
+            });
+            checkAutoDomain.addEventListener('change', () => {
+                inputDomain.disabled = checkAutoDomain.checked;
+                readParams();
+                buildScene();
+                buildEFieldArrows();
+            });
+            inputDomain.disabled = checkAutoDomain.checked;
+            checkProjZAuto.addEventListener('change', () => {
+                inputProjZ.disabled = checkProjZAuto.checked;
+                readParams();
+                buildScene();
+                buildEFieldArrows();
+            });
+            inputProjZ.disabled = checkProjZAuto.checked;
+            [[inputS0, numX0Di], [inputY0, numY0Di], [inputZ0, numZ0Di]].forEach(([rangeEl, numEl]) => {
+                rangeEl.addEventListener('input', () => {
+                    numEl.value = (parseFloat(rangeEl.value) * x0).toFixed(2);
+                    resetTrajectory();
+                });
+                numEl.addEventListener('input', () => {
+                    rangeEl.value = (parseFloat(numEl.value) / x0).toFixed(2);
+                    resetTrajectory();
+                });
+            });
+            [[inputVx0, numVx0], [inputVy0, numVy0], [inputVz0, numVz0]].forEach(([rangeEl, numEl]) => {
+                rangeEl.addEventListener('input', () => { numEl.value = rangeEl.value; resetTrajectory(); });
+                numEl.addEventListener('input', () => { rangeEl.value = numEl.value; resetTrajectory(); });
+            });
+            inputSpeed.addEventListener('input', syncAllLabels);
+            checkShowE.addEventListener('change', buildEFieldArrows);
+            checkBUniform.addEventListener('change', () => {
+                readParams();
+                buildScene();
+                buildEFieldArrows();
+            });
+            checkEEnabled.addEventListener('change', buildEFieldArrows);
+
+            syncAllLabels();
+            readParams();
+            buildScene();
+            buildEFieldArrows();
+            buildGizmo();
+            resetTrajectory();
+            resetCamera();
+            requestAnimationFrame(animate);
+        }
+
+        function resetCamera() {
+            const d = viewHalf * 1.7;
+            camera.position.set(d * 0.6, d * 0.4, d * 0.6);
+            controls.target.set(0, 0, 0);
+            if (isOrthographic) {
+                const aspect = container.clientWidth / container.clientHeight;
+                const fs = viewHalf * 2.4;
+                orthographicCamera.left = -fs * aspect / 2; orthographicCamera.right = fs * aspect / 2;
+                orthographicCamera.top = fs / 2; orthographicCamera.bottom = -fs / 2;
+                orthographicCamera.updateProjectionMatrix();
+            }
+        }
+
+        function buildScene() {
+            if (gridHelper) scene.remove(gridHelper);
+            if (boxLines) scene.remove(boxLines);
+
+            const gridDivisions = Math.max(6, Math.min(150, Math.round((viewHalf * 2) / 1.2)));
+            gridHelper = new THREE.GridHelper(viewHalf * 2, gridDivisions, 0x444466, 0x222233);
+            gridHelper.position.y = -viewHalf * 0.4;
+            scene.add(gridHelper);
+
+            const boxGeo = new THREE.BoxGeometry(viewHalf * 2, viewHalf * 0.8 * parseFloat(inputShockScale.value), viewHalf * 0.8 * parseFloat(inputShockScale.value));
+            const boxEdges = new THREE.EdgesGeometry(boxGeo);
+            boxLines = new THREE.LineSegments(boxEdges, new THREE.LineBasicMaterial({ color: 0x334, transparent: true, opacity: 0.35 }));
+            scene.add(boxLines);
+
+            shockPlane.geometry.dispose();
+            shockPlane.geometry = new THREE.PlaneGeometry(viewHalf * 0.8 * parseFloat(inputShockScale.value), viewHalf * 0.8 * parseFloat(inputShockScale.value));
+            shockPlane.position.x = xt;
+
+            xyPlaneMesh.geometry.dispose();
+            xyPlaneMesh.geometry = new THREE.PlaneGeometry(viewHalf * 1.8, viewHalf * 0.8 * parseFloat(inputShockScale.value));
+            xyPlaneMesh.position.set(0, 0, projWallZ);
+
+            buildDomainLabels();
+            buildBmagRibbon();
+            buildBmagVolume();
+            seedTracers();
+        }
+
+        function buildDomainLabels() {
+            if (domainLabelGroup) scene.remove(domainLabelGroup);
+            domainLabelGroup = new THREE.Group();
+
+            const y = -viewHalf * 0.4;
+            const z = viewHalf * 0.42;
+            const xMin = -viewHalf * 0.9, xMax = viewHalf * 0.9;
+
+            const dimMat = new THREE.LineBasicMaterial({ color: 0xffab00, transparent: true, opacity: 0.7 });
+            const dimPts = [
+                new THREE.Vector3(xMin, y + 0.02, z), new THREE.Vector3(xMax, y + 0.02, z)
+            ];
+            domainLabelGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(dimPts), dimMat));
+
+            const tickH = Math.max(0.15, viewHalf * 0.03);
+            [xMin, xMax].forEach(x => {
+                const tickPts = [new THREE.Vector3(x, y - tickH, z), new THREE.Vector3(x, y + tickH, z)];
+                domainLabelGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(tickPts), dimMat));
+            });
+
+            const endLabelScale = Math.max(0.4, viewHalf * 0.09);
+            const leftLabel = makeTextSprite((xMin * x0).toFixed(1) + ' di', '#ffab00', 40, 200, 56, endLabelScale * 1.25, endLabelScale * 0.35);
+            leftLabel.position.set(xMin, y - tickH - 0.35, z);
+            domainLabelGroup.add(leftLabel);
+
+            const rightLabel = makeTextSprite('+' + (xMax * x0).toFixed(1) + ' di', '#ffab00', 40, 200, 56, endLabelScale * 1.25, endLabelScale * 0.35);
+            rightLabel.position.set(xMax, y - tickH - 0.35, z);
+            domainLabelGroup.add(rightLabel);
+
+            scene.add(domainLabelGroup);
+        }
+
+        function bMagColor(t) {
+            const c1 = [10, 14, 28], c2 = [0, 229, 255];
+            const r = Math.round(c1[0] + (c2[0] - c1[0]) * t);
+            const g = Math.round(c1[1] + (c2[1] - c1[1]) * t);
+            const b = Math.round(c1[2] + (c2[2] - c1[2]) * t);
+            return 'rgb(' + r + ',' + g + ',' + b + ')';
+        }
+
+        function buildBmagRibbon() {
+            if (bmagRibbonMesh) {
+                scene.remove(bmagRibbonMesh);
+                bmagRibbonMesh.geometry.dispose();
+                bmagRibbonMesh.material.map.dispose();
+                bmagRibbonMesh.material.dispose();
+            }
+
+            const xMin = -viewHalf * 0.9, xMax = viewHalf * 0.9;
+            const nSamp = 220;
+            const mags = [];
+            const refMag = B0 * parseFloat(inputB1.max) * 1.05;
+            for (let i = 0; i < nSamp; i++) {
+                const x = xMin + (i / (nSamp - 1)) * (xMax - xMin);
+                const m = fieldBAt(x).length();
+                mags.push(m);
+            }
+
+            const cw = 512, ch = 40;
+            const canvas = document.createElement('canvas');
+            canvas.width = cw; canvas.height = ch;
+            const ctx = canvas.getContext('2d');
+            for (let px = 0; px < cw; px++) {
+                const idx = Math.min(nSamp - 1, Math.floor((px / cw) * nSamp));
+                const t = Math.min(1, mags[idx] / refMag);
+                ctx.fillStyle = bMagColor(t);
+                ctx.fillRect(px, 0, 1, ch);
+            }
+
+            const tex = new THREE.CanvasTexture(canvas);
+            tex.minFilter = THREE.LinearFilter;
+            const depth = Math.max(1, viewHalf * 0.15);
+            const geo = new THREE.PlaneGeometry(xMax - xMin, depth);
+            const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.9, side: THREE.DoubleSide, depthWrite: false });
+            bmagRibbonMesh = new THREE.Mesh(geo, mat);
+            bmagRibbonMesh.rotation.x = -Math.PI / 2;
+            bmagRibbonMesh.position.set((xMin + xMax) / 2, -viewHalf * 0.4 + 0.02, 0);
+            scene.add(bmagRibbonMesh);
+        }
+
+        function buildBmagVolume() {
+            while (bmagVolumeGroup.children.length) {
+                const c = bmagVolumeGroup.children.pop();
+                c.geometry.dispose();
+                c.material.dispose();
+                bmagVolumeGroup.remove(c);
+            }
+
+            const xMin = -viewHalf * 0.9, xMax = viewHalf * 0.9;
+            const nSlices = parseInt(inputVolRes.value);
+            const baseOpacity = parseFloat(inputVolOp.value);
+
+            const refMag = B0 * parseFloat(inputB1.max) * 1.05;
+            const mags = [];
+            for (let i = 0; i < nSlices; i++) {
+                const x = xMin + (i / (nSlices - 1)) * (xMax - xMin);
+                const m = fieldBAt(x).length();
+                mags.push(m);
+            }
+
+            const sliceGeo = new THREE.PlaneGeometry(viewHalf * 0.8 * parseFloat(inputShockScale.value), viewHalf * 0.8 * parseFloat(inputShockScale.value));
+            for (let i = 0; i < nSlices; i++) {
+                const x = xMin + (i / (nSlices - 1)) * (xMax - xMin);
+                const t = Math.min(1, mags[i] / refMag);
+                const color = new THREE.Color().setStyle(bMagColor(t));
+                const mat = new THREE.MeshBasicMaterial({
+                    color, transparent: true, opacity: baseOpacity * (0.3 + 0.7 * t),
+                    side: THREE.DoubleSide, depthWrite: false
+                });
+                const slice = new THREE.Mesh(sliceGeo, mat);
+                slice.rotation.y = Math.PI / 2;
+                slice.position.set(x, 0, 0);
+                bmagVolumeGroup.add(slice);
+            }
+        }
+
+        function buildEFieldArrows() {
+            while (fieldGroupE.children.length) fieldGroupE.remove(fieldGroupE.children[0]);
+            if (!checkShowE.checked) return;
+            const e = fieldEConst();
+            const mag = e.length();
+            if (mag < 1e-4) return;
+            const len = Math.min(1.2, 0.4 + 0.4 * mag);
+            bTracerX.forEach((x, i) => {
+                if (i % 2 !== 0) return;
+                const arrow = new THREE.ArrowHelper(e.clone().normalize(), new THREE.Vector3(x, -0.6, 0), len, 0xffea00, len * 0.3, len * 0.15);
+                arrow.line.material.transparent = true; arrow.line.material.opacity = 0.6;
+                arrow.cone.material.transparent = true; arrow.cone.material.opacity = 0.6;
+                fieldGroupE.add(arrow);
+            });
+        }
+
+        function advanceTracers(dt) {
+            const halfSpan = viewHalf * 0.9;
+            for (let i = 0; i < bTracerX.length; i++) {
+                bTracerX[i] += fieldLineSpeed(bTracerX[i]) * dt;
+                if (bTracerX[i] > halfSpan) bTracerX[i] -= 2 * halfSpan;
+                if (bTracerX[i] < -halfSpan) bTracerX[i] += 2 * halfSpan;
+            }
+        }
+
+        function buildBFieldArrows() {
+            while (fieldGroupB.children.length) fieldGroupB.remove(fieldGroupB.children[0]);
+            if (!checkShowB.checked) return;
+            bTracerX.forEach(x => {
+                const b = fieldBAt(x);
+                const mag = b.length();
+                if (mag < 1e-4) return;
+                const len = Math.min(1.2, 0.5 + 0.4 * (mag / (B0 + 1e-6)));
+                const arrow = new THREE.ArrowHelper(b.clone().normalize(), new THREE.Vector3(x, 0, 0), len, 0x00e5ff, len * 0.3, len * 0.15);
+                arrow.line.material.transparent = true; arrow.line.material.opacity = 0.6;
+                arrow.cone.material.transparent = true; arrow.cone.material.opacity = 0.6;
+                fieldGroupB.add(arrow);
+            });
+        }
+
+        function borisPush(dt) {
+            const B = fieldBAt(pos.x);
+            const E = fieldEConst();
+            const qm = qParticle / mParticle;
+            const half = qm * dt * 0.5;
+
+            const vMinus = vel.clone().add(E.clone().multiplyScalar(half));
+            const t = B.clone().multiplyScalar(half);
+            const tMagSq = t.lengthSq();
+            const s = t.clone().multiplyScalar(2 / (1 + tMagSq));
+
+            const vPrime = vMinus.clone().add(new THREE.Vector3().crossVectors(vMinus, t));
+            const vPlus = vMinus.clone().add(new THREE.Vector3().crossVectors(vPrime, s));
+
+            vel.copy(vPlus.add(E.clone().multiplyScalar(half)));
+            pos.add(vel.clone().multiplyScalar(dt));
+            simTime += dt;
+
+            if (checkPeriodicYZ.checked && wrapTransverse()) frameWrapped = true;
+        }
+
+        function buildBrokenSegments(mapFn) {
+            const pts = [];
+            for (let i = 1; i < trailPoints.length; i++) {
+                if (!trailPoints[i].brk) {
+                    pts.push(mapFn(trailPoints[i - 1].p), mapFn(trailPoints[i].p));
+                }
+            }
+            return pts;
+        }
+
+        function jetColor(t) {
+            const r = Math.min(1, Math.max(0, 1.5 - Math.abs(4 * t - 3)));
+            const g = Math.min(1, Math.max(0, 1.5 - Math.abs(4 * t - 2)));
+            const b = Math.min(1, Math.max(0, 1.5 - Math.abs(4 * t - 1)));
+            return [r, g, b];
+        }
+
+        function momColor(value) {
+            const lo = Math.max(1e-6, parseFloat(numMomMin.value) || 0.01);
+            const hi = Math.max(lo * 1.0001, parseFloat(numMomMax.value) || 1);
+            const logMin = Math.log10(lo), logMax = Math.log10(hi);
+            const v = Math.max(1e-6, value);
+            let t = (Math.log10(v) - logMin) / (logMax - logMin);
+            t = Math.min(1, Math.max(0, t));
+            return jetColor(t);
+        }
+
+        function buildBrokenSegmentsColored() {
+            const positions = [];
+            const colors = [];
+            const autoNorm = Math.max(1e-6, Math.abs(vsh) * mi);
+            derMomNorm.textContent = autoNorm.toFixed(4);
+            const pRef = checkMomManualNorm.checked ? Math.max(1e-6, parseFloat(numMomNorm.value) || 1) : autoNorm;
+            for (let i = 1; i < trailPoints.length; i++) {
+                if (!trailPoints[i].brk) {
+                    positions.push(trailPoints[i - 1].p, trailPoints[i].p);
+                    const r0 = trailPoints[i - 1].mom / pRef;
+                    const r1 = trailPoints[i].mom / pRef;
+                    colors.push(momColor(r0), momColor(r1));
+                }
+            }
+            return { positions, colors };
+        }
+
+        function updateTrailRibbon() {
+            const { positions, colors } = buildBrokenSegmentsColored();
+            const halfW = Math.max(0.001, parseFloat(numTrailWidth.value) || 0.3) / (2 * x0);
+
+            const verts = [];
+            const cols = [];
+            for (let i = 0; i < positions.length; i += 2) {
+                const p0 = positions[i], p1 = positions[i + 1];
+                const c0 = colors[i], c1 = colors[i + 1];
+                const dir = new THREE.Vector3().subVectors(p1, p0);
+                if (dir.lengthSq() < 1e-12) continue;
+                dir.normalize();
+                const mid = new THREE.Vector3().addVectors(p0, p1).multiplyScalar(0.5);
+                const viewDir = new THREE.Vector3().subVectors(camera.position, mid).normalize();
+                let perp = new THREE.Vector3().crossVectors(dir, viewDir);
+                if (perp.lengthSq() < 1e-8) perp.set(0, 1, 0); else perp.normalize();
+                perp.multiplyScalar(halfW);
+
+                const a = new THREE.Vector3().addVectors(p0, perp);
+                const b = new THREE.Vector3().subVectors(p0, perp);
+                const c = new THREE.Vector3().addVectors(p1, perp);
+                const d = new THREE.Vector3().subVectors(p1, perp);
+
+                verts.push(a, b, c, b, d, c);
+                cols.push(c0, c0, c1, c0, c1, c1);
+            }
+
+            const geo = new THREE.BufferGeometry();
+            const posArr = new Float32Array(verts.length * 3);
+            verts.forEach((v, i) => { posArr[i * 3] = v.x; posArr[i * 3 + 1] = v.y; posArr[i * 3 + 2] = v.z; });
+            geo.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
+            const colArr = new Float32Array(cols.length * 3);
+            cols.forEach((c, i) => { colArr[i * 3] = c[0]; colArr[i * 3 + 1] = c[1]; colArr[i * 3 + 2] = c[2]; });
+            geo.setAttribute('color', new THREE.BufferAttribute(colArr, 3));
+
+            trailLine.geometry.dispose();
+            trailLine.geometry = geo;
+        }
+
+        function wrapTransverse() {
+            const h = viewHalf * 0.4 * parseFloat(inputShockScale.value);
+            if (h < 1e-6) return false;
+            const span = 2 * h;
+            let wrapped = false;
+            while (pos.y > h) { pos.y -= span; wrapped = true; }
+            while (pos.y < -h) { pos.y += span; wrapped = true; }
+            while (pos.z > h) { pos.z -= span; wrapped = true; }
+            while (pos.z < -h) { pos.z += span; wrapped = true; }
+            return wrapped;
+        }
+
+        function updateVectors() {
+            while (vecGroup.children.length) vecGroup.remove(vecGroup.children[0]);
+            const B = fieldBAt(pos.x);
+            const E = fieldEConst();
+
+            const addArrow = (vec, color, show, capLen) => {
+                if (!show) return;
+                const mag = vec.length();
+                if (mag < 1e-4) return;
+                let len = mag * 0.4;
+                if (len > capLen) len = capLen;
+                const arrow = new THREE.ArrowHelper(vec.clone().normalize(), pos, len, color, len * 0.3, len * 0.16);
+                vecGroup.add(arrow);
+            };
+
+            addArrow(vel, 0xff007f, checkShowV.checked, 1.6);
+            const force = E.clone().add(new THREE.Vector3().crossVectors(vel, B)).multiplyScalar(qParticle);
+            addArrow(force, 0xff1744, checkShowF.checked, 1.6);
+
+            const bMagSq = B.lengthSq();
+            if (bMagSq > 1e-6) {
+                const drift = new THREE.Vector3().crossVectors(E, B).multiplyScalar(1 / bMagSq);
+                addArrow(drift, 0xffab00, checkShowDrift.checked, 1.6);
+            }
+        }
+
+        function updateHud() {
+            const speed = vel.length();
+            hudSpeed.textContent = speed.toFixed(3);
+            hudKe.textContent = (0.5 * mParticle * speed * speed).toFixed(3);
+            hudMom.textContent = (mParticle * speed / Math.max(1e-6, Math.abs(vsh) * mi)).toFixed(3);
+            hudX1.textContent = (pos.x * x0).toFixed(2) + ' d_i';
+            hudPos.textContent = ((pos.x - xt) * x0).toFixed(2) + ', ' + (pos.y * x0).toFixed(2) + ', ' + (pos.z * x0).toFixed(2) + ' d_i';
+            hudTime.textContent = simTime.toFixed(2);
+            hudTimeWci.textContent = (simTime * wci).toFixed(3);
+
+            const B = fieldBAt(pos.x);
+            const E = fieldEConst();
+            const bMag = B.length();
+            hudBmag.textContent = bMag.toFixed(3);
+            hudBvec.textContent = B.x.toFixed(2) + ', ' + B.y.toFixed(2) + ', ' + B.z.toFixed(2);
+            hudEvec.textContent = '0.00, 0.00, ' + E.z.toFixed(3);
+            hudDomain.textContent = domainOK ? 'OK' : 'clamped to 0';
+            hudDomain.className = domainOK ? 'hud-value' : 'hud-value warn';
+
+            if (bMag > 1e-4) {
+                const bDir = B.clone().normalize();
+                const vPar = vel.dot(bDir);
+                const vPerpVec = vel.clone().sub(bDir.clone().multiplyScalar(vPar));
+                const vPerp = vPerpVec.length();
+                const pitch = Math.atan2(vPerp, vPar) * 180 / Math.PI;
+                hudPitch.textContent = pitch.toFixed(1) + '\u00b0';
+                const rL = Math.abs(mParticle * vPerp / (qParticle * bMag)) || 0;
+                hudLarmor.textContent = isFinite(rL) ? (rL * x0).toFixed(3) + ' d_i' : '\u221e';
+                const fc = Math.abs(qParticle * bMag / (2 * Math.PI * mParticle));
+                hudFc.textContent = fc.toFixed(3);
+            } else {
+                hudPitch.textContent = '\u2014'; hudLarmor.textContent = '\u2014'; hudFc.textContent = '\u2014';
+            }
+
+            const bMagSq = B.lengthSq();
+            hudDrift.textContent = bMagSq > 1e-6 ? new THREE.Vector3().crossVectors(E, B).multiplyScalar(1 / bMagSq).length().toFixed(3) : '0.000';
+        }
+
+        let lastTime = null;
+        function animate(time) {
+            requestAnimationFrame(animate);
+
+            if (checkAnimate.checked && time && lastTime !== null) {
+                let dt = (time - lastTime) / 1000;
+                if (!isNaN(dt) && dt < 0.2) {
+                    dt *= parseFloat(inputSpeed.value);
+                    const substeps = 10;
+                    const h = dt / substeps;
+                    frameWrapped = false;
+                    for (let i = 0; i < substeps; i++) borisPush(h);
+                    trailPoints.push({ p: pos.clone(), brk: frameWrapped, mom: mParticle * vel.length() });
+                    while (trailPoints.length > 3000) trailPoints.shift();
+
+                    if (checkMoveB.checked) advanceTracers(dt);
+                }
+            }
+            if (time) lastTime = time;
+
+            particleMesh.position.copy(pos);
+            trailLine.visible = checkShowTrail.checked;
+            if (checkShowTrail.checked) updateTrailRibbon();
+            shockPlane.visible = checkShowShockPlane.checked;
+            if (bmagRibbonMesh) bmagRibbonMesh.visible = checkShowBmagRibbon.checked;
+            if (bmagVolumeGroup) bmagVolumeGroup.visible = checkShowBmagVolume.checked;
+
+            xyPlaneMesh.visible = checkShowXYProj.checked;
+            xyProjLine.visible = checkShowXYProj.checked;
+            xyProjMarker.visible = checkShowXYProj.checked;
+            if (checkShowXYProj.checked) {
+                xyProjLine.geometry.setFromPoints(buildBrokenSegments(p => new THREE.Vector3(p.x, p.y, projWallZ)));
+                xyProjMarker.position.set(pos.x, pos.y, projWallZ);
+            }
+
+            buildBFieldArrows();
+            buildEFieldArrows();
+            updateVectors();
+            updateHud();
+
+            controls.update();
+            renderer.render(scene, camera);
+            renderGizmo();
+        }
+
+        function onWindowResize() {
+            const aspect = container.clientWidth / container.clientHeight;
+            perspectiveCamera.aspect = aspect;
+            perspectiveCamera.updateProjectionMatrix();
+            resetCamera();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>

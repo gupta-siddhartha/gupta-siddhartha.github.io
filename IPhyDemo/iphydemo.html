@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ViPhyDemo — Plasma Physics Visualizations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0d12; --panel:#12151c; --panel2:#181c25; --line:#262b36;
+    --text:#e7eaf0; --dim:#8992a6; --accent:#5fd0e8; --accent2:#ff8a5b;
+    --font-sans:'Outfit', sans-serif; --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:var(--font-sans);
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    padding:6vh 1.5rem 4vh;
+  }
+  header{text-align:center; max-width:640px; margin-bottom:3rem;}
+  header h1{
+    font-size:2rem; font-weight:700; letter-spacing:-0.02em; margin:0 0 0.6rem;
+    background:linear-gradient(135deg, var(--text) 40%, var(--accent) 100%);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  header p{color:var(--dim); font-size:0.95rem; line-height:1.6; margin:0;}
+  .cards{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    gap:1.25rem; width:100%; max-width:900px;
+  }
+  a.card{
+    display:block; background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:1.5rem; text-decoration:none; color:inherit; transition:border-color .2s, transform .2s;
+  }
+  a.card:hover{border-color:var(--accent); transform:translateY(-2px);}
+  .card .tag{
+    display:inline-block; font-family:var(--font-mono); font-size:0.68rem; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--accent); background:var(--panel2);
+    border:1px solid var(--line); border-radius:6px; padding:0.2rem 0.5rem; margin-bottom:0.8rem;
+  }
+  .card h2{font-size:1.15rem; font-weight:600; margin:0 0 0.5rem;}
+  .card p{color:var(--dim); font-size:0.85rem; line-height:1.55; margin:0 0 1rem;}
+  .card .open{font-family:var(--font-mono); font-size:0.78rem; color:var(--accent2);}
+  footer{margin-top:3rem; color:var(--dim); font-size:0.78rem; font-family:var(--font-mono);}
+  footer a{color:var(--dim);}
+</style>
+</head>
+<body>
+  <header>
+    <h1>ViPhyDemo</h1>
+    <p>Interactive visualizations and solvers for plasma-physics phenomena: cosmic-ray-driven
+       current instabilities and charged-particle motion at a collisionless shock.</p>
+  </header>
+
+  <div class="cards">
+    <a class="card" href="cr_instability_visualizer.html">
+      <span class="tag">Solver + 3D Field Viewer</span>
+      <h2>Bell Instability</h2>
+      <p>Nonresonant CR-current-driven (Bell) instability — dispersion relation solver with
+         growth rates and 3D field reconstruction.</p>
+      <span class="open">Launch dashboard →</span>
+    </a>
+
+    <a class="card" href="shock_particle_dashboard.html">
+      <span class="tag">Boris Pusher</span>
+      <h2>Particle in Shock</h2>
+      <p>Motion of a charged particle crossing a quasi-perpendicular collisionless shock,
+         integrated in 3D with a Boris pusher.</p>
+      <span class="open">Launch dashboard →</span>
+    </a>
+  </div>
+
+  <footer><a href="https://github.com/gupta-siddhartha/ViPhyDemo">github.com/gupta-siddhartha/ViPhyDemo</a></footer>
+</body>
+</html>
